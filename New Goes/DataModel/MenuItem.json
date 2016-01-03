@@ -1,20 +1,21 @@
-{
-    "MenuItems": 
-    [
-        {
-            "name": "Транспорт",
-            "description": "Транспорты по номерам",
-            "image": "ms-appx:///Assets/MenuItemsLogo/Bus.png"
-        },
-        {
-            "name": "Остановки",
-            "description": "Остановки по названиям",
-            "image": "ms-appx:///Assets/MenuItemsLogo/Stops.png"
-        },
-        {
-            "name": "Избранное",
-            "description": "Ваши избранные остановки",
-            "image": "ms-appx:///Assets/MenuItemsLogo/Favorites.png"
-        }
-    ]
+п»ї{"MenuItems":[
+    {
+        "name" : "С‚СЂР°РЅСЃРїРѕСЂС‚",
+        "description" : "С‚СЂР°РЅСЃРїРѕСЂС‚ РїРѕ РЅРѕРјРµСЂР°Рј",
+        "image": "/Assets/MenuItemsLogo/Bus.png",
+        "position" : "0"
+    },
+    {
+        "name" : "РѕСЃС‚Р°РЅРѕРІРєРё",
+        "description" : "РѕСЃС‚Р°РЅРѕРІРєРё РїРѕ РЅР°Р·РІР°РЅРёСЏРј",
+        "image": "/Assets/MenuItemsLogo/Stops.png",
+        "position" : "1"
+    },
+    {
+        "name" : "РёР·Р±СЂР°РЅРЅРѕРµ",
+        "description" : "РІР°С€Рё РёР·Р±СЂР°РЅРЅС‹Рµ РѕСЃС‚Р°РЅРѕРІРєРё",
+        "image": "/Assets/MenuItemsLogo/Favorites.png",
+        "position" : "2"
+    }
+]
 }
