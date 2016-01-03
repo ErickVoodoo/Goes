@@ -1,0 +1,20 @@
+{
+    "MenuItems": 
+    [
+        {
+            "name": "Транспорт",
+            "description": "Транспорты по номерам",
+            "image": "ms-appx:///Assets/MenuItemsLogo/Bus.png"
+        },
+        {
+            "name": "Остановки",
+            "description": "Остановки по названиям",
+            "image": "ms-appx:///Assets/MenuItemsLogo/Stops.png"
+        },
+        {
+            "name": "Избранное",
+            "description": "Ваши избранные остановки",
+            "image": "ms-appx:///Assets/MenuItemsLogo/Favorites.png"
+        }
+    ]
+}
