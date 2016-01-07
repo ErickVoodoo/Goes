@@ -1,4 +1,5 @@
 ﻿using New_Goes.Common;
+using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.DataModel;
 using System;
@@ -6,11 +7,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -88,12 +91,22 @@ namespace New_Goes
         /// <summary>
         /// Shows the details of a clicked group in the <see cref="SectionPage"/>.
         /// </summary>
-        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void MenuItem_Click(object sender, ItemClickEventArgs e)
         {
             var position = ((MenuItem)e.ClickedItem).position;
-            if (!Frame.Navigate(typeof(ItemPage), position))
+            if (Int32.Parse(position) == 0)
             {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                if (!Frame.Navigate(typeof(Views.Directions)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
+            }
+            else if(Int32.Parse(position) == 1)
+            {
+                if (!Frame.Navigate(typeof(Views.Stops)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
             }
         }
 
@@ -122,5 +135,13 @@ namespace New_Goes
         }
 
         #endregion
+
+        private async void Update_Schedule(object sender, RoutedEventArgs e)
+        {
+            Database.DropDatabase();
+            Schedule scedule = new Schedule();
+            Status status = await scedule.GetSchedule(Constant.CITY_MINSK_SCHEDULE);
+            await new MessageDialog(status.reason).ShowAsync();
+        }
     }
 }

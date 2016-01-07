@@ -6,7 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:data="using:New_Goes.Data"
-    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}">
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Page.Transitions>
         <TransitionCollection>
@@ -74,7 +75,7 @@
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0" Margin="14.5,0,0,0">
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="Goes" Foreground="White" FontSize="32"/>
+            <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" Foreground="White" FontSize="32"/>
         </Grid>
         
         <Pivot x:Name="LayoutRoot" Grid.Row="1">
@@ -85,12 +86,12 @@
                     </Grid>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
-            <PivotItem DataContext="{Binding MenuItems}" Header="меню">
+            <PivotItem x:Uid="MainMenu_PivotItemMenu" DataContext="{Binding MenuItems}" >
                 <ListView 
                         SelectionMode="None"
                         ItemsSource="{Binding}"
                         IsItemClickEnabled="True"
-                        ItemClick="ItemView_ItemClick"
+                        ItemClick="MenuItem_Click"
                         ContinuumNavigationTransitionInfo.ExitElementContainer="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -101,9 +102,9 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Border Background="Transparent" Margin="0,9.5,0,0" Grid.Column="0" HorizontalAlignment="Left">
-                                    <Image Source="{Binding Path=image}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="79" Width="79"/>
+                                    <Image Source="{Binding Path=image}" Stretch="UniformToFill" Height="79" Width="79"/>
                                 </Border>
-                                <StackPanel Grid.Column="1" Margin="14.5,0,0,0" VerticalAlignment="Center">
+                                <StackPanel Grid.Column="1" Margin="14.5,0,0,0">
                                     <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
                                     <TextBlock Text="{Binding Path=description}" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
                                 </StackPanel>
@@ -112,12 +113,12 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="настройки">
+            <PivotItem x:Uid="MainMenu_PivotItemSettings">
                 <Grid>
                     <StackPanel Orientation="Vertical">
-                        <Button HorizontalAlignment="Stretch">обновить расписание</Button>
-                        <Button HorizontalAlignment="Stretch">изменить город</Button>
-                        <Button HorizontalAlignment="Stretch">оценить</Button>
+                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonUpdateDatabase" Click="Update_Schedule"/>
+                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonChangeCity"/>
+                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonRate"/>
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center">
                                 упрощенная версия приложения Goes - транспорт Беларуси
                         </TextBlock>

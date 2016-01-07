@@ -1,14 +1,20 @@
 ﻿using New_Goes.Common;
+using New_Goes.CommonAPI;
 using New_Goes.Data;
+using New_Goes.Model;
+using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,24 +25,26 @@ using Windows.UI.Xaml.Navigation;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkID=391641
 
-namespace New_Goes
+namespace New_Goes.Views
 {
     /// <summary>
     /// A page that displays details for a single item within a group.
     /// </summary>
-    public sealed partial class ItemPage : Page
+    public sealed partial class MainSchedule : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public ItemPage()
+        string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+
+        public MainSchedule()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        } 
+        }
 
         /// <summary>
         /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
@@ -66,10 +74,25 @@ namespace New_Goes
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
+        /// 
+        ScheduleSQL param;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            TESTBLOCK.Text = (string) e.NavigationParameter;
+            param = e.NavigationParameter as ScheduleSQL;
+            this.DefaultViewModel["Direction"] = param.d_name;
+            this.DefaultViewModel["Number"] = param.number;
+            this.DefaultViewModel["Stop"] = param.s_name;
+            await Task.Run(() => LoadRoutes(param));
         }
+
+        private async Task LoadRoutes(ScheduleSQL param)
+        {
+            Time time = new Time();
+            List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.days, param.schedule);
+
+            this.DefaultViewModel["Monday"] = list[0];
+        }
+
 
         /// <summary>
         /// Preserves state associated with this page in case the application is suspended or the

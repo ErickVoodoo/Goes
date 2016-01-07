@@ -121,24 +121,27 @@
     <value>Goes</value>
   </data>
   <data name="MainMenuSettings_ButtonChangeCity.Content" xml:space="preserve">
-    <value>change city</value>
+    <value>изменить город</value>
   </data>
   <data name="MainMenuSettings_ButtonRate.Content" xml:space="preserve">
-    <value>rate</value>
+    <value>оценить</value>
   </data>
   <data name="MainMenuSettings_ButtonUpdateDatabase.Content" xml:space="preserve">
-    <value>update shcedule</value>
+    <value>обновить расписание</value>
   </data>
   <data name="MainMenu_PivotItemMenu.Header" xml:space="preserve">
-    <value>menu</value>
+    <value>меню</value>
   </data>
   <data name="MainMenu_PivotItemSettings.Header" xml:space="preserve">
-    <value>settings</value>
+    <value>настройки</value>
   </data>
   <data name="NavigationFailedExceptionMessage" xml:space="preserve">
     <value>Navigation failed.</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
   <data name="type" xml:space="preserve">
-    <value>en</value>
+    <value>ru</value>
   </data>
 </root>

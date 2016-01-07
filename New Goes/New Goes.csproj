@@ -82,6 +82,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonAPI\Constant.cs" />
+    <Compile Include="CommonAPI\Database.cs" />
+    <Compile Include="CommonAPI\Schedule.cs" />
+    <Compile Include="CommonAPI\Time.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
@@ -91,13 +95,27 @@
     <Compile Include="HubPage.xaml.cs">
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ItemPage.xaml.cs">
-      <DependentUpon>ItemPage.xaml</DependentUpon>
+    <Compile Include="Model\ScheduleMain.cs" />
+    <Compile Include="Model\StopNames.cs" />
+    <Compile Include="Views\MainSchedule.xaml.cs">
+      <DependentUpon>MainSchedule.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DirectionStops.xaml.cs">
+      <DependentUpon>DirectionStops.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Stops.xaml.cs">
+      <DependentUpon>Stops.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Directions.xaml.cs">
+      <DependentUpon>Directions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Direction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SectionPage.xaml.cs">
       <DependentUpon>SectionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SQLite.cs" />
+    <Compile Include="SQLiteAsync.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -135,7 +153,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ItemPage.xaml">
+    <Page Include="Views\MainSchedule.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DirectionStops.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Stops.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Directions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,7 +175,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataModel\MenuItem.json" />
+    <Content Include="DataModel\MenuItems-ru.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -153,7 +183,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DataModel\MenuItems-en.json" />
     <None Include="packages.config" />
+    <PRIResource Include="Strings\ru-RU\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <SDKReference Include="Microsoft.VCLibs, version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows Phone</Name>
+    </SDKReference>
+    <SDKReference Include="SQLite.WP81, Version=3.8.10.2">
+      <Name>SQLite for Windows Phone 8.1</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

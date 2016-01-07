@@ -33,7 +33,10 @@ namespace New_Goes.DataModel
 
         public async Task<ObservableCollection<MenuItem>> getMenuItems()
         {
-            Uri menuUri = new Uri("ms-appx:///DataModel/MenuItem.json");
+            var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+            string type = loader.GetString("type");
+
+            Uri menuUri = new Uri("ms-appx:///DataModel/MenuItems-" + type + ".json");
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(menuUri);
             /*List<MenuItem> movie1 = JsonConvert.DeserializeObject<List<MenuItem>>(await FileIO.ReadLinesAsync(file));*/
 
