@@ -1,6 +1,8 @@
 ﻿using New_Goes.Common;
+using New_Goes.CommonAPI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -36,6 +38,7 @@ namespace New_Goes
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+            LoadValues();
         }
 
         /// <summary>
@@ -104,6 +107,13 @@ namespace New_Goes
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter.
+                if (LocalProperties.LoadFromToLP(LocalProperties.LP_selected_city) == null)
+                {
+                    if (!rootFrame.Navigate(typeof(Loading), e.Arguments))
+                    {
+                        throw new Exception("Failed to create initial page");
+                    }
+                } else 
                 if (!rootFrame.Navigate(typeof(HubPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
@@ -136,6 +146,19 @@ namespace New_Goes
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
+        }
+
+        private void LoadValues()
+        {
+            if(LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == null) {
+                this.RequestedTheme = ApplicationTheme.Light;
+                LocalProperties.SaveToLP(LocalProperties.LP_theme, LocalProperties.theme_light);
+            }
+            else
+                if (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light)
+                    this.RequestedTheme = ApplicationTheme.Light;
+                else
+                    this.RequestedTheme = ApplicationTheme.Dark;
         }
     }
 }

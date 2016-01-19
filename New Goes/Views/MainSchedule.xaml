@@ -35,32 +35,161 @@
         <Grid Grid.Row="0" Margin="14.5,0,0,0">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Number}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="White" FontSize="24"/>
-                    <TextBlock Text="{Binding Direction}" Style="{ThemeResource TitleTextBlockStyle}" Foreground="White" FontSize="24"/>
+                    <TextBlock Text="{Binding Number}" Style="{ThemeResource BodyTextBlockStyle}" FontSize="24"/>
+                    <TextBlock Text="{Binding Direction}" Style="{ThemeResource TitleTextBlockStyle}" FontSize="24"/>
                 </StackPanel>
-                <TextBlock Text="{Binding Stop}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="White" FontSize="24"/>
+                <TextBlock Text="{Binding Stop}" Style="{ThemeResource BodyTextBlockStyle}" FontSize="24"/>
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" x:Name="PivotMain">
-            <ListView SelectionMode="None" ItemsSource="{Binding Monday}">
-                <ListView.ItemContainerTransitions>
-                    <TransitionCollection>
-                        <EdgeUIThemeTransition Edge="Right"/>
-                    </TransitionCollection>
-                </ListView.ItemContainerTransitions>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+        <Pivot Grid.Row="1" x:Name="PivotMain">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock Text="{Binding}" FontSize="28"/>
+                    </Grid>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <PivotItem Header="Monday" x:Name="PItemMonday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Monday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Tuesday" x:Name="PItemTuesday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Tuesday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Wednesday" x:Name="PItemWednesday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Wednesday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Thursday" x:Name="PItemThursday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Thursday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Friday" x:Name="PItemFriday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Friday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Saturday" x:Name="PItemSaturday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Saturday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Sunday" x:Name="PItemSunday">
+                <ListView SelectionMode="None" ItemsSource="{Binding Sunday}">
+                    <ListView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EdgeUIThemeTransition Edge="Right"/>
+                        </TransitionCollection>
+                    </ListView.ItemContainerTransitions>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
+                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
+                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
+                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </Page>

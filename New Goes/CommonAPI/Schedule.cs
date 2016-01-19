@@ -43,10 +43,10 @@ namespace New_Goes.CommonAPI
                     JsonObject objectR = route.GetObject();
                     Routes.Add(new Route
                     {
-                        id = objectR["id"].GetString(),
+                        id = Int32.Parse(objectR["id"].GetString()),
                         number = objectR["number"].GetString(),
-                        type = objectR["type"].GetString(),
-                        ord = objectR["ord"].GetString(),
+                        type = Int32.Parse(objectR["type"].GetString()),
+                        ord = Int32.Parse(objectR["ord"].GetString()),
                     });
                 }
 
@@ -56,7 +56,7 @@ namespace New_Goes.CommonAPI
                     JsonObject objectD = direction.GetObject();
                     Directions.Add(new Direction
                     {
-                        id = objectD["id"].GetString(),
+                        id = Int32.Parse(objectD["id"].GetString()),
                         name = objectD["name"].GetString(),
                     });
                 }
@@ -67,7 +67,7 @@ namespace New_Goes.CommonAPI
                     JsonObject objectSN = stopname.GetObject();
                     StopNames.Add(new StopName
                     {
-                        id = objectSN["id"].GetString(),
+                        id = Int32.Parse(objectSN["id"].GetString()),
                         name = objectSN["name"].GetString(),
                     });
                 }
@@ -78,7 +78,7 @@ namespace New_Goes.CommonAPI
                     JsonObject objectP = pointer.GetObject();
                     Pointers.Add(new Pointer
                     {
-                        id = objectP["id"].GetString(),
+                        id = Int32.Parse(objectP["id"].GetString()),
                         name = objectP["name"].GetString(),
                     });
                 }
@@ -89,11 +89,12 @@ namespace New_Goes.CommonAPI
                     JsonObject objectS = stops.GetObject();
                     Stops.Add(new Stop
                     {
-                        id = objectS["id"].GetString(),
-                        n_id = objectS["n_id"].GetString(),
-                        r_id = objectS["r_id"].GetString(),
-                        d_id = objectS["d_id"].GetString(),
-                        p_id = objectS["p_id"].GetString(),
+                        id = Int32.Parse(objectS["id"].GetString()),
+                        n_id = Int32.Parse(objectS["n_id"].GetString()),
+                        r_id = Int32.Parse(objectS["r_id"].GetString()),
+                        d_id = Int32.Parse(objectS["d_id"].GetString()),
+                        p_id = Int32.Parse(objectS["p_id"].GetString()),
+                        favorite = 0,
                         days = objectS["days"].GetString(),
                         schedule = objectS["schedule"].GetString(),
                     });
@@ -116,39 +117,40 @@ namespace New_Goes.CommonAPI
 
     public class Route
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string number { get; set; }
-        public string type { get; set; }
-        public string ord { get; set; }
+        public int type { get; set; }
+        public int ord { get; set; }
     }
 
     public class Direction
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
     }
 
     public class StopName
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
     }
 
     public class Pointer
     {
-        public string id { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
     }
 
     public class Stop
     {
-        public string id { get; set; }
-        public string n_id { get; set; }
-        public string r_id { get; set; }
-        public string d_id { get; set; }
-        public string p_id { get; set; }
+        public int id { get; set; }
+        public int n_id { get; set; }
+        public int r_id { get; set; }
+        public int d_id { get; set; }
+        public int p_id { get; set; }
         public string days { get; set; }
         public string schedule { get; set; }
+        public int favorite { get; set; }
     }
 
     public class RootObject

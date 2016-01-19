@@ -4,6 +4,7 @@ using New_Goes.Data;
 using New_Goes.DataModel;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -41,10 +42,10 @@ namespace New_Goes
         {
             this.InitializeComponent();
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
-            this.NavigationCacheMode = NavigationCacheMode.Required;
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         public NavigationHelper NavigationHelper
@@ -108,6 +109,13 @@ namespace New_Goes
                     throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
                 }
             }
+            else if (Int32.Parse(position) == 2)
+            {
+                if (!Frame.Navigate(typeof(Views.Favorite)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
+            }
         }
 
         #region NavigationHelper registration
@@ -127,21 +135,56 @@ namespace New_Goes
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            LoadSettings();
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
+            if (e.NavigationMode == NavigationMode.Back)
+                NavigationCacheMode = NavigationCacheMode.Disabled;
         }
 
         #endregion
 
         private async void Update_Schedule(object sender, RoutedEventArgs e)
         {
+            Constant.Loader("Обновление расписания...", true);
+            Status status = await Task.Run(() => updateSchedule());
+            Constant.Loader("Успешно", false);
+            await new MessageDialog(status.reason).ShowAsync();
+        }
+
+        private async Task<Status> updateSchedule()
+        {
             Database.DropDatabase();
             Schedule scedule = new Schedule();
-            Status status = await scedule.GetSchedule(Constant.CITY_MINSK_SCHEDULE);
-            await new MessageDialog(status.reason).ShowAsync();
+            return await scedule.GetSchedule(Constant.CITY_MINSK_SCHEDULE);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(Loading)))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+        bool isLoadedSettings = false;
+        private void LoadSettings()
+        {
+            Toggle_Theme.IsOn = LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light;
+            isLoadedSettings = true;
+        }
+
+        private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            if(isLoadedSettings) {
+                TextBlock_ReloadApp.Text = "перезагрузите приложение для применения настроек темы";
+                if (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light)
+                    LocalProperties.SaveToLP(LocalProperties.LP_theme, LocalProperties.theme_dark);
+                else
+                    LocalProperties.SaveToLP(LocalProperties.LP_theme, LocalProperties.theme_light);
+            }
         }
     }
 }

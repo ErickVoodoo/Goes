@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using New_Goes.Model;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,11 +26,26 @@ namespace New_Goes.CommonAPI
         {
             string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
             SQLiteAsyncConnection connection = new SQLiteAsyncConnection(dbPath);
-            connection.QueryAsync<Route>("DELETE FROM route");
-            connection.QueryAsync<Direction>("DELETE FROM direction");
-            connection.QueryAsync<Stop>("DELETE FROM stop");
-            connection.QueryAsync<StopName>("DELETE FROM stopname");
-            connection.QueryAsync<Pointer>("DELETE FROM pointer");
+            connection.QueryAsync<Route>("DROP TABLE IF EXISTS route");
+            connection.QueryAsync<Direction>("DROP TABLE IF EXISTS direction");
+            connection.QueryAsync<Stop>("DROP TABLE IF EXISTS stop");
+            connection.QueryAsync<StopName>("DROP TABLE IF EXISTS stopname");
+            connection.QueryAsync<Pointer>("DROP TABLE IF EXISTS pointer");
+            CreateTables();
+        }
+
+        public static void AddOrRemoveFromFavorite(int s_id, int r_id, int d_id)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            if (connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0} AND s.r_id={1} AND s.d_id={2} AND s.favorite=1", s_id, r_id, d_id)).Count != 0)
+            {
+                connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=0 WHERE n_id={0} AND r_id={1} AND d_id={2}", s_id, r_id, d_id));
+            }
+            else
+            {
+                connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=1 WHERE n_id={0} AND r_id={1} AND d_id={2}", s_id, r_id, d_id));
+            }
         }
     }
 }

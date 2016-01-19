@@ -75,7 +75,7 @@
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0" Margin="14.5,0,0,0">
-            <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" Foreground="White" FontSize="32"/>
+            <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
         </Grid>
         
         <Pivot x:Name="LayoutRoot" Grid.Row="1">
@@ -117,7 +117,9 @@
                 <Grid>
                     <StackPanel Orientation="Vertical">
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonUpdateDatabase" Click="Update_Schedule"/>
-                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonChangeCity"/>
+                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonChangeCity" Click="Button_Click"/>
+                        <TextBlock x:Name="TextBlock_ReloadApp" Foreground="Red" HorizontalAlignment="Stretch" TextWrapping="Wrap"  Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
+                        <ToggleSwitch x:Name="Toggle_Theme" Toggled="ToggleSwitch_Toggled"/>
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonRate"/>
                         <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center">
                                 упрощенная версия приложения Goes - транспорт Беларуси

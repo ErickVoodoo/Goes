@@ -1,8 +1,5 @@
 ﻿using New_Goes.Common;
 using New_Goes.CommonAPI;
-using New_Goes.Data;
-using New_Goes.Model;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,11 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,21 +20,20 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkID=391641
+// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 
-namespace New_Goes.Views
+namespace New_Goes
 {
     /// <summary>
-    /// A page that displays details for a single item within a group.
+    /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainSchedule : Page
+    public sealed partial class Loading : Page
     {
-        private readonly NavigationHelper navigationHelper;
-        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private NavigationHelper navigationHelper;
+        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
-
-        public MainSchedule()
+        public Loading()
         {
             this.InitializeComponent();
 
@@ -64,73 +60,33 @@ namespace New_Goes.Views
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation. Any saved state is also
+        /// Populates the page with content passed during navigation.  Any saved state is also
         /// provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
-        /// The source of the event; typically <see cref="NavigationHelper"/>.
+        /// The source of the event; typically <see cref="NavigationHelper"/>
         /// </param>
         /// <param name="e">Event data that provides both the navigation parameter passed to
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        /// 
-        ScheduleSQL param;
-        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            param = e.NavigationParameter as ScheduleSQL;
-            this.DefaultViewModel["Direction"] = param.d_name;
-            this.DefaultViewModel["Number"] = param.number;
-            this.DefaultViewModel["Stop"] = param.s_name;
-            await Task.Run(() => LoadRoutes(param));
+            this.defaultViewModel["Cities"] = Constant.City;
+            cities = Constant.City;
         }
-
-        private async Task LoadRoutes(ScheduleSQL param)
-        {
-            Time time = new Time();
-            List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.days, param.schedule);
-
-            this.DefaultViewModel["Monday"] = list[0];
-            this.DefaultViewModel["Tuesday"] = list[1];
-            this.DefaultViewModel["Wednesday"] = list[2];
-            this.DefaultViewModel["Thursday"] = list[3];
-            this.DefaultViewModel["Friday"] = list[4];
-            this.DefaultViewModel["Saturday"] = list[5];
-            this.DefaultViewModel["Sunday"] = list[6];
-
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-            () =>
-            {
-                if (list[0].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemMonday));
-                if (list[1].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemTuesday));
-                if (list[2].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemWednesday));
-                if (list[3].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemThursday));
-                if (list[4].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemFriday));
-                if (list[5].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSaturday));
-                if (list[6].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSunday));
-            }
-            );
-        }
-
 
         /// <summary>
         /// Preserves state associated with this page in case the application is suspended or the
         /// page is discarded from the navigation cache.  Values must conform to the serialization
         /// requirements of <see cref="SuspensionManager.SessionState"/>.
         /// </summary>
-        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/>.</param>
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
         /// <param name="e">Event data that provides an empty dictionary to be populated with
         /// serializable state.</param>
+        StaticData[] cities;
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
-            // TODO: Save the unique state of the page here.
         }
 
         #region NavigationHelper registration
@@ -139,10 +95,10 @@ namespace New_Goes.Views
         /// The methods provided in this section are simply used to allow
         /// NavigationHelper to respond to the page's navigation methods.
         /// <para>
-        /// Page specific logic should be placed in event handlers for the
+        /// Page specific logic should be placed in event handlers for the  
         /// <see cref="NavigationHelper.LoadState"/>
         /// and <see cref="NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method
+        /// The navigation parameter is available in the LoadState method 
         /// in addition to page state preserved during an earlier session.
         /// </para>
         /// </summary>
@@ -159,5 +115,49 @@ namespace New_Goes.Views
         }
 
         #endregion
+        StaticData selected;
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            LoadSchedule.IsEnabled = true;
+            Button button = sender as Button;
+            selected = ((sender as Button).Parent as Grid).DataContext as StaticData;
+            for (int i = 0; i < Constant.City.Length; i++)
+            {
+                if (cities[i].key == selected.key)
+                {
+                    cities[i].background = "LightGray";
+                }
+                else
+                {
+                    cities[i].background = "Transparent";
+                }
+            }
+            Cities.ItemsSource = null;
+            Cities.ItemsSource = cities;
+        }
+
+        private async void LoadSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            Constant.Loader("Загрузка расписания...", true);
+            LoadSchedule.IsEnabled = false;
+            Cities.IsEnabled = false;
+            Database.DropDatabase();
+            Status status = await Task.Run(() => loadSchedule());
+            if (status.isSuccess)
+            {
+                Constant.Loader("Успешно", false);
+                LocalProperties.SaveToLP(LocalProperties.LP_selected_city, selected.key);
+                if (!Frame.Navigate(typeof(HubPage)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
+            }
+        }
+
+        public async Task<Status> loadSchedule() {
+            Schedule schedule = new Schedule();
+            return await schedule.GetSchedule(selected.value);
+        }
     }
 }

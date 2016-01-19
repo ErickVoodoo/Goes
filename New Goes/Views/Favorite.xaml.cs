@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -30,21 +31,22 @@ namespace New_Goes.Views
     /// <summary>
     /// A page that displays details for a single item within a group.
     /// </summary>
-    public sealed partial class MainSchedule : Page
+    public sealed partial class Favorite : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-
+        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
         string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
 
-        public MainSchedule()
+        public Favorite()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-        }
+            NavigationCacheMode = NavigationCacheMode.Required;
+        } 
 
         /// <summary>
         /// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
@@ -75,48 +77,37 @@ namespace New_Goes.Views
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
         /// 
-        ScheduleSQL param;
+        bool isLoaded = false;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            param = e.NavigationParameter as ScheduleSQL;
-            this.DefaultViewModel["Direction"] = param.d_name;
-            this.DefaultViewModel["Number"] = param.number;
-            this.DefaultViewModel["Stop"] = param.s_name;
-            await Task.Run(() => LoadRoutes(param));
+                this.DefaultViewModel["Title"] = "Остановки";
         }
 
-        private async Task LoadRoutes(ScheduleSQL param)
+        List<StopNameSQL> Favorites;
+
+        private async Task LoadStopNames()
         {
-            Time time = new Time();
-            List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.days, param.schedule);
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            Favorites = new List<StopNameSQL>();
+            var items = connection.Query<StopNameSQL>(
+                "SELECT s.n_id as id, sn.name as name " +
+                "FROM stop AS s " +
+                "LEFT JOIN stopname as sn ON s.n_id = sn.id " +
+                "WHERE s.favorite=1 " +
+                "GROUP BY name " + 
+                "ORDER BY name");
 
-            this.DefaultViewModel["Monday"] = list[0];
-            this.DefaultViewModel["Tuesday"] = list[1];
-            this.DefaultViewModel["Wednesday"] = list[2];
-            this.DefaultViewModel["Thursday"] = list[3];
-            this.DefaultViewModel["Friday"] = list[4];
-            this.DefaultViewModel["Saturday"] = list[5];
-            this.DefaultViewModel["Sunday"] = list[6];
-
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
-            () =>
-            {
-                if (list[0].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemMonday));
-                if (list[1].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemTuesday));
-                if (list[2].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemWednesday));
-                if (list[3].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemThursday));
-                if (list[4].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemFriday));
-                if (list[5].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSaturday));
-                if (list[6].Count == 0)
-                    PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSunday));
+            foreach(var item in items) {
+                Favorites.Add(new StopNameSQL()
+                {
+                    id = item.id,
+                    name = item.name,
+                    width = screenWidth
+                });
             }
-            );
+
+
+            this.DefaultViewModel["Favorites"] = Favorites;
         }
 
 
@@ -148,16 +139,35 @@ namespace New_Goes.Views
         /// </summary>
         /// <param name="e">Provides data for navigation methods and event
         /// handlers that cannot cancel the navigation request.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        /// 
+
+        double screenWidth;
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedTo(e);
+            if (!isLoaded)
+            {
+                this.navigationHelper.OnNavigatedTo(e);
+                screenWidth = Window.Current.Bounds.Width;
+                await Task.Run(() => LoadStopNames());
+                isLoaded = true;
+            }           
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
+            if (e.NavigationMode == NavigationMode.Back)
+                NavigationCacheMode = NavigationCacheMode.Disabled;
         }
 
         #endregion
+
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(Views.FavoriteTransport), e.ClickedItem as StopNameSQL))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
     }
 }

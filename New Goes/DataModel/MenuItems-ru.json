@@ -2,19 +2,22 @@
     {
         "name" : "транспорт",
         "description" : "транспорт по номерам",
-        "image": "/Assets/MenuItemsLogo/Bus.png",
+        "img_white": "/Assets/MenuItemsLogo/bus_white.png",
+        "img_black": "/Assets/MenuItemsLogo/bus_black.png",
         "position" : "0"
     },
     {
         "name" : "остановки",
         "description" : "остановки по названиям",
-        "image": "/Assets/MenuItemsLogo/Stops.png",
+        "img_white": "/Assets/MenuItemsLogo/stops_white.png",
+        "img_black": "/Assets/MenuItemsLogo/stops_black.png",
         "position" : "1"
     },
     {
         "name" : "избранное",
         "description" : "ваши избранные остановки",
-        "image": "/Assets/MenuItemsLogo/Favorites.png",
+        "img_white": "/Assets/MenuItemsLogo/fav_white.png",
+        "img_black": "/Assets/MenuItemsLogo/fav_black.png",
         "position" : "2"
     }
 ]

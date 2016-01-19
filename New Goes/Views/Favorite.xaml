@@ -1,5 +1,5 @@
 ﻿<Page x:Name="pageRoot"
-    x:Class="New_Goes.Views.Stops"    
+    x:Class="New_Goes.Views.Favorite"    
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:New_Goes"
@@ -32,42 +32,25 @@
         </Grid.RowDefinitions>
 
 
-        <StackPanel Grid.Row="0" Margin="14.5,0,0,0">
+        <Grid Grid.Row="0" Margin="14.5,0,0,0">
             <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontSize="24" Text="{Binding Title}"/>
-        </StackPanel>
+        </Grid>
 
-        <Grid Grid.Row="1" x:Name="PivotMain">
-            <ListView SelectionMode="None" ItemsSource="{Binding Transport}" ItemClick="ListView_ItemClick" IsItemClickEnabled="True">
+        <Grid Grid.Row="1">
+            <ListView SelectionMode="None" ItemsSource="{Binding Favorites}" ItemClick="ListView_ItemClick" IsItemClickEnabled="True">
                 <ListView.ItemContainerTransitions>
                     <TransitionCollection>
                         <EdgeUIThemeTransition Edge="Right"/>
                     </TransitionCollection>
                 </ListView.ItemContainerTransitions>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Width="{Binding Path=width}">
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Column="0">
-                                <TextBlock Text="{Binding Path=name}" HorizontalAlignment="Stretch" Style="{ThemeResource ListViewItemContentTextBlockStyle}" TextWrapping="NoWrap" FontSize="20"/>
-                            </Grid>
-                            
-                            <Grid Grid.Column="1">
-                                <StackPanel Margin="9.5,0,0,0" Orientation="Horizontal">
-                                    <Image Source="{Binding Path=isBus}" Width="20" Height="20"/>
-                                    <Image Source="{Binding Path=isTroll}" Width="20" Height="20"/>
-                                    <Image Source="{Binding Path=isTramm}" Width="20" Height="20"/>
-                                </StackPanel>
-                            </Grid>
-                            </Grid>
-                            <Rectangle Height="1" HorizontalAlignment="Stretch" Fill="LightGray"/>
-
-                        </StackPanel>
+                        <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"  Width="{Binding Path=width}"/>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

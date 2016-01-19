@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using New_Goes.CommonAPI;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace New_Goes.DataModel
                 JsonObject groupObject = groupValue.GetObject();
                 MenuItem _sampleDataSource = new MenuItem(groupObject["name"].GetString(),
                                                        groupObject["description"].GetString(),
-                                                       groupObject["image"].GetString(),
+                                                       LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light ? groupObject["img_black"].GetString() : groupObject["img_white"].GetString(),
                                                        groupObject["position"].GetString());
                 MenuList.Add(_sampleDataSource);
             }

@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="CommonAPI\Constant.cs" />
     <Compile Include="CommonAPI\Database.cs" />
+    <Compile Include="CommonAPI\LocalProperties.cs" />
     <Compile Include="CommonAPI\Schedule.cs" />
     <Compile Include="CommonAPI\Time.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
@@ -95,8 +96,20 @@
     <Compile Include="HubPage.xaml.cs">
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Loading.xaml.cs">
+      <DependentUpon>Loading.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\ScheduleMain.cs" />
     <Compile Include="Model\StopNames.cs" />
+    <Compile Include="Views\Favorite.xaml.cs">
+      <DependentUpon>Favorite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FavoriteTransport.xaml.cs">
+      <DependentUpon>FavoriteTransport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StopsTransport.xaml.cs">
+      <DependentUpon>StopsTransport.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainSchedule.xaml.cs">
       <DependentUpon>MainSchedule.xaml</DependentUpon>
     </Compile>
@@ -129,9 +142,15 @@
     <Content Include="Assets\HubBackground.theme-dark.png" />
     <Content Include="Assets\HubBackground.theme-light.png" />
     <Content Include="Assets\Logo.scale-240.png" />
-    <Content Include="Assets\MenuItemsLogo\Favorites.png" />
-    <Content Include="Assets\MenuItemsLogo\Stops.png" />
     <Content Include="Assets\MenuItemsLogo\Bus.png" />
+    <Content Include="Assets\MenuItemsLogo\bus_black.png" />
+    <Content Include="Assets\MenuItemsLogo\fav_black.png" />
+    <Content Include="Assets\MenuItemsLogo\fav_white.png" />
+    <Content Include="Assets\MenuItemsLogo\stops_black.png" />
+    <Content Include="Assets\MenuItemsLogo\stops_white.png" />
+    <Content Include="Assets\MenuItemsLogo\bus_white.png" />
+    <Content Include="Assets\MenuItemsLogo\Tramm.png" />
+    <Content Include="Assets\MenuItemsLogo\Troll.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />
     <Content Include="Assets\Square71x71Logo.scale-240.png" />
@@ -152,6 +171,22 @@
     <Page Include="HubPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Loading.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Favorite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FavoriteTransport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\StopsTransport.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainSchedule.xaml">
       <Generator>MSBuild:Compile</Generator>
