@@ -1,0 +1,24 @@
+﻿{"MenuItems":[
+    {
+        "name" : "transport",
+        "description" : "transport by numbers",
+        "img_white": "/Assets/MenuItemsLogo/bus_white.png",
+        "img_black": "/Assets/MenuItemsLogo/bus_black.png",
+        "position" : "0"
+    },
+    {
+        "name" : "stops",
+        "description" : "stops by names",
+        "img_white": "/Assets/MenuItemsLogo/stops_white.png",
+        "img_black": "/Assets/MenuItemsLogo/stops_black.png",
+        "position" : "1"
+    },
+    {
+        "name" : "favorites",
+        "description" : "your favorites stops",
+        "img_white": "/Assets/MenuItemsLogo/fav_white.png",
+        "img_black": "/Assets/MenuItemsLogo/fav_black.png",
+        "position" : "2"
+    }
+]
+}
