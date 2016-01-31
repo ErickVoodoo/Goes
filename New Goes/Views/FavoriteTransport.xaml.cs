@@ -87,10 +87,12 @@ namespace New_Goes.Views
         {
             if (!isLoaded)
             {
+                Constant.Loader("Загрузка транспорта...", true);
                 param = e.NavigationParameter as StopNameSQL;
                 this.DefaultViewModel["Title"] = param.name;
                 await Task.Run(() => LoadRoutes(param));
                 isLoaded = true;
+                Constant.Loader("Успешно", false);
             }
         }
 
@@ -119,6 +121,7 @@ namespace New_Goes.Views
                 {
                     Buses.Add(new DirectionStopSQL()
                     {
+                        width = param.width,
                         name = item.name,
                         r_id = item.r_id,
                         type = item.type,
@@ -134,6 +137,7 @@ namespace New_Goes.Views
                 {
                     Trolls.Add(new DirectionStopSQL()
                     {
+                        width = param.width,
                         name = item.name,
                         r_id = item.r_id,
                         type = item.type,
@@ -149,6 +153,7 @@ namespace New_Goes.Views
                 {
                     Tramms.Add(new DirectionStopSQL()
                     {
+                        width = param.width,
                         name = item.name,
                         r_id = item.r_id,
                         type = item.type,
@@ -227,11 +232,17 @@ namespace New_Goes.Views
             DirectionStopSQL paramItem = e.ClickedItem as DirectionStopSQL;
             ScheduleSQL mainSchedule = new ScheduleSQL()
             {
+                type = paramItem.type,
+                favorite = (paramItem.favorite == Constant.FavoriteStar) ? true : false,
                 days = paramItem.days,
                 schedule = paramItem.schedule,
                 number = paramItem.number,
                 d_name = paramItem.name,
                 s_name = param.name,
+                d_id = paramItem.d_id,
+                r_id = paramItem.r_id,
+                n_id = paramItem.n_id,
+                width = param.width
             };
             if (!Frame.Navigate(typeof(Views.MainSchedule), mainSchedule))
             {

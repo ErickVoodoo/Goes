@@ -31,11 +31,34 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
-        <StackPanel Grid.Row="0" Margin="14.5,0,0,0" Orientation="Vertical">
-            <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontSize="24" Text="{Binding Title}"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="9.5,0,9.5,9.5">
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
+                <Grid Margin="0,9.5,0,0" Width="{Binding StaticWidth}">
+                    <Border BorderBrush="Gray" BorderThickness="2">
+                        <Grid Margin="4.5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" HorizontalAlignment="Left" Width="50" Height="50" CornerRadius="25" BorderThickness="25" BorderBrush="{Binding BorderColor}">
+
+                            </Border>
+
+                            <Grid  Grid.Column="0" Width="50" Height="50">
+                                <Ellipse Fill="LightGray"/>
+                                <Image Source="/Assets/MenuItemsLogo/bench.png" Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+                            </Grid>
+
+                            <StackPanel Grid.Column="1" Margin="9.5,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Title}" Style="{ThemeResource TitleTextBlockStyle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Grid>
 
         <Pivot Grid.Row="1" x:Name="PivotMain">
             <Pivot.HeaderTemplate>
@@ -54,23 +77,28 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Margin="0,0,0,9.5" Width="{Binding Path=width}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Border  Margin="14.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60">
-                                    <Button MinWidth="50" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
+                                <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#FFBC00" BorderThickness="2">
+                                    <TextBlock Text="{Binding Path=number}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Normal" Margin="-2,-2,0,0"/>
+                                </Border>
+
+                                <StackPanel Margin="9.5,0,9.5,0" Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
+                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <Border Margin="0,0,9.5,0" Grid.Column="2" HorizontalAlignment="Left">
+                                    <Button MinWidth="35" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
                                         <Button.Content>
-                                            <SymbolIcon Symbol="{Binding Path=favorite}"/>
+                                            <SymbolIcon Symbol="Cancel"/>
                                         </Button.Content>
                                     </Button>
                                 </Border>
-                                <StackPanel Grid.Column="1" Margin="14.5,0,0,0" VerticalAlignment="Center" Orientation="Vertical">
-                                    <TextBlock Text="{Binding Path=number}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -85,23 +113,28 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Margin="0,0,0,9.5" Width="{Binding Path=width}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Border  Margin="14.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60">
-                                    <Button MinWidth="50" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
+                                <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#3700EB" BorderThickness="2">
+                                    <TextBlock Text="{Binding Path=number}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Normal" Margin="-2,-2,0,0"/>
+                                </Border>
+
+                                <StackPanel Margin="9.5,0,9.5,0" Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
+                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <Border Margin="0,0,9.5,0" Grid.Column="2" HorizontalAlignment="Left">
+                                    <Button MinWidth="35" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
                                         <Button.Content>
-                                            <SymbolIcon Symbol="{Binding Path=favorite}"/>
+                                            <SymbolIcon Symbol="Cancel"/>
                                         </Button.Content>
                                     </Button>
                                 </Border>
-                                <StackPanel Grid.Column="1" Margin="14.5,0,0,0" VerticalAlignment="Center" Orientation="Vertical">
-                                    <TextBlock Text="{Binding Path=number}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -116,23 +149,28 @@
                     </ListView.ItemContainerTransitions>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
+                            <Grid Margin="0,0,0,9.5" Width="{Binding Path=width}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Border  Margin="14.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60">
-                                    <Button MinWidth="50" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
+                                <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#EB0000" BorderThickness="2">
+                                    <TextBlock Text="{Binding Path=number}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Normal" Margin="-2,-2,0,0"/>
+                                </Border>
+
+                                <StackPanel Margin="9.5,0,9.5,0" Grid.Column="1" VerticalAlignment="Center" Orientation="Vertical">
+                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <Border Margin="0,0,9.5,0" Grid.Column="2" HorizontalAlignment="Left">
+                                    <Button MinWidth="35" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
                                         <Button.Content>
-                                            <SymbolIcon Symbol="{Binding Path=favorite}"/>
+                                            <SymbolIcon Symbol="Cancel"/>
                                         </Button.Content>
                                     </Button>
                                 </Border>
-                                <StackPanel Grid.Column="1" Margin="14.5,0,0,0" VerticalAlignment="Center" Orientation="Vertical">
-                                    <TextBlock Text="{Binding Path=number}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

@@ -5,6 +5,7 @@ using New_Goes.Model;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -80,15 +81,15 @@ namespace New_Goes.Views
         bool isLoaded = false;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-                this.DefaultViewModel["Title"] = "Остановки";
+                this.DefaultViewModel["Title"] = "Избранные";
         }
 
-        List<StopNameSQL> Favorites;
+        ObservableCollection<StopNameSQL> Favorites;
 
         private async Task LoadStopNames()
         {
             SQLiteConnection connection = new SQLiteConnection(dbPath);
-            Favorites = new List<StopNameSQL>();
+            Favorites = new ObservableCollection<StopNameSQL>();
             var items = connection.Query<StopNameSQL>(
                 "SELECT s.n_id as id, sn.name as name " +
                 "FROM stop AS s " +
@@ -144,13 +145,10 @@ namespace New_Goes.Views
         double screenWidth;
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            if (!isLoaded)
-            {
-                this.navigationHelper.OnNavigatedTo(e);
-                screenWidth = Window.Current.Bounds.Width;
-                await Task.Run(() => LoadStopNames());
-                isLoaded = true;
-            }           
+             this.navigationHelper.OnNavigatedTo(e);
+             screenWidth = Window.Current.Bounds.Width;
+             await Task.Run(() => LoadStopNames());
+             isLoaded = true;          
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -168,6 +166,13 @@ namespace New_Goes.Views
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StopNameSQL model = (((sender as Button).Parent as Border).Parent as Grid).DataContext as StopNameSQL;
+            Favorites.Remove(model);
+            Database.RemoveWholeStops(Int32.Parse(model.id));
         }
     }
 }

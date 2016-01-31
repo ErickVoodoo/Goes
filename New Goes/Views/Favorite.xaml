@@ -32,8 +32,11 @@
         </Grid.RowDefinitions>
 
 
-        <Grid Grid.Row="0" Margin="14.5,0,0,0">
-            <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
+        <Grid Grid.Row="0" Margin="9.5,0,0,9.5">
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
+                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontSize="24" Text="{Binding Title}"/>
+            </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -43,14 +46,26 @@
                         <EdgeUIThemeTransition Edge="Right"/>
                     </TransitionCollection>
                 </ListView.ItemContainerTransitions>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}"  Width="{Binding Path=width}"/>
+                        <Grid Width="{Binding Path=width}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Margin="9.5,0,0,0" Grid.Column="0" VerticalAlignment="Center" Orientation="Vertical">
+                                <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Margin="9.5,0,9.5,0" HorizontalAlignment="Left">
+                                <Button MinWidth="35" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
+                                    <Button.Content>
+                                        <SymbolIcon Symbol="Cancel"/>
+                                    </Button.Content>
+                                </Button>
+                            </Border>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

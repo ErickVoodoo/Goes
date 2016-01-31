@@ -34,6 +34,8 @@ namespace New_Goes.CommonAPI
         public static string FavoriteStar = "SolidStar";
         public static string UnFavoriteStar = "OutlineStar";
 
+        public static string[] TransportColors = { "#FFBC00", "#3700EB", "#EB0000" };
+
         public static async void Loader(string loaderMessage, bool showProgress)
         {
             StatusBarProgressIndicator progressbar = StatusBar.GetForCurrentView().ProgressIndicator;
@@ -45,7 +47,6 @@ namespace New_Goes.CommonAPI
             }
             else
             {
-                await Task.Delay(3000);
                 await progressbar.HideAsync();
             }
         }

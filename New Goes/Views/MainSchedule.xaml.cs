@@ -78,17 +78,21 @@ namespace New_Goes.Views
         ScheduleSQL param;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            Constant.Loader("Загрузка расписания...", true);
             param = e.NavigationParameter as ScheduleSQL;
             this.DefaultViewModel["Direction"] = param.d_name;
             this.DefaultViewModel["Number"] = param.number;
             this.DefaultViewModel["Stop"] = param.s_name;
+            this.DefaultViewModel["BorderColor"] = Constant.TransportColors[param.type];
+            this.DefaultViewModel["Favorite"] = param.favorite ? Constant.FavoriteStar : Constant.UnFavoriteStar;
             await Task.Run(() => LoadRoutes(param));
+            Constant.Loader("Успешно", false);
         }
 
         private async Task LoadRoutes(ScheduleSQL param)
         {
             Time time = new Time();
-            List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.days, param.schedule);
+            List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.width, param.days, param.schedule);
 
             this.DefaultViewModel["Monday"] = list[0];
             this.DefaultViewModel["Tuesday"] = list[1];
@@ -98,6 +102,7 @@ namespace New_Goes.Views
             this.DefaultViewModel["Saturday"] = list[5];
             this.DefaultViewModel["Sunday"] = list[6];
 
+            int selectedPivot = Time.getWeekDay();
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
@@ -115,6 +120,7 @@ namespace New_Goes.Views
                     PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSaturday));
                 if (list[6].Count == 0)
                     PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSunday));
+                PivotMain.SelectedIndex = list[selectedPivot].Count != 0 ? selectedPivot : 0;
             }
             );
         }
@@ -159,5 +165,11 @@ namespace New_Goes.Views
         }
 
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Database.AddOrRemoveFromFavorite(param.n_id, param.r_id, param.d_id);
+            this.DefaultViewModel["Favorite"] = this.DefaultViewModel["Favorite"] == Constant.FavoriteStar ? Constant.UnFavoriteStar : Constant.FavoriteStar;
+        }
     }
 }

@@ -31,14 +31,58 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
-        <Grid Grid.Row="0" Margin="14.5,0,0,0">
+        <Grid Grid.Row="0" Margin="9.5,0,9.5,9.5">
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Number}" Style="{ThemeResource BodyTextBlockStyle}" FontSize="24"/>
-                    <TextBlock Text="{Binding Direction}" Style="{ThemeResource TitleTextBlockStyle}" FontSize="24"/>
-                </StackPanel>
-                <TextBlock Text="{Binding Stop}" Style="{ThemeResource BodyTextBlockStyle}" FontSize="24"/>
+                <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
+                <Grid Margin="0,9.5,0,0">
+                    <Border BorderBrush="Gray" BorderThickness="2">
+                        <StackPanel Orientation="Vertical">
+                            <Grid Margin="4.5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid  Grid.Column="0" Width="50" Height="50">
+                                    <Ellipse Fill="{Binding BorderColor}"/>
+                                    <TextBlock Text="{Binding Number}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontWeight="Normal" Foreground="Black"/>
+                                </Grid>
+
+                                <StackPanel Grid.Column="1" Margin="9.5,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Direction}" Style="{ThemeResource TitleTextBlockStyle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                            <Grid Margin="4.5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" HorizontalAlignment="Left" Width="50" Height="50" CornerRadius="25" BorderThickness="25" BorderBrush="{Binding BorderColor}">
+
+                                </Border>
+
+                                <Grid  Grid.Column="0" Width="50" Height="50">
+                                    <Ellipse Fill="LightGray"/>
+                                    <Image Source="/Assets/MenuItemsLogo/bench.png" Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+                                </Grid>
+
+                                <StackPanel Grid.Column="1" Margin="9.5,0,0,0" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Stop}" Style="{ThemeResource TitleTextBlockStyle}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                                </StackPanel>
+
+                                <Border Grid.Column="2" VerticalAlignment="Center">
+                                    <Button MinWidth="45" MinHeight="45" BorderThickness="0" BorderBrush="Transparent" Click="Button_Click">
+                                        <Button.Content>
+                                            <SymbolIcon x:Name="MainAddButton" Symbol="{Binding Favorite}"/>
+                                        </Button.Content>
+                                    </Button>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </StackPanel>
         </Grid>
 
@@ -50,20 +94,28 @@
                     </Grid>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
-            <PivotItem Header="Monday" x:Name="PItemMonday">
+            <PivotItem Header="понедельник" x:Name="PItemMonday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Monday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="#2695f0"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -77,13 +129,21 @@
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="#2695f0"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -97,13 +157,21 @@
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="#2695f0"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -117,13 +185,21 @@
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="#2695f0"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -137,13 +213,21 @@
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="#2695f0"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -157,13 +241,21 @@
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=cur_time}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="Orange"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -177,13 +269,21 @@
                             <EdgeUIThemeTransition Edge="Right"/>
                         </TransitionCollection>
                     </ListView.ItemContainerTransitions>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal" Height="30">
-                                    <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center" Width="30"/>
-                                    <Border BorderThickness="0,0,2,0" BorderBrush="Blue" Height="30"/>
-                                    <TextBlock Text="{Binding Path=minute}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
+                            <Grid Height="50" Width="{Binding Path=width}">
+                                <StackPanel Orientation="Vertical">
+                                    <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
+                                    <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Path=hour}" Style="{ThemeResource MessageDialogTitleStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Width="40"/>
+                                        <Rectangle Height="50" VerticalAlignment="Stretch" Width="2" Fill="Red"/>
+                                        <TextBlock Margin="9.5,0,0,0" Text="{Binding Path=minute}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>

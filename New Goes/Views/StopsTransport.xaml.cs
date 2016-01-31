@@ -5,6 +5,7 @@ using New_Goes.Model;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -86,23 +87,26 @@ namespace New_Goes.Views
         {
             if (!isLoaded)
             {
+                Constant.Loader("Загрузка транспорта...", true);
                 param = e.NavigationParameter as StopNameAllSQL;
-                this.DefaultViewModel["Title"] = param.name;
+                this.DefaultViewModel["Title"] = param.name; 
+                this.DefaultViewModel["Favorite"] = Database.IfAllStopsAreFavorite(Int32.Parse(param.id)) ? Constant.FavoriteStar : Constant.UnFavoriteStar;
                 await Task.Run(() => LoadRoutes(param));
                 isLoaded = true;
+                Constant.Loader("Успешно", false);
             }
         }
 
-        List<DirectionStopSQL> Buses;
-        List<DirectionStopSQL> Trolls;
-        List<DirectionStopSQL> Tramms;
+        ObservableCollection<DirectionStopSQL> Buses;
+        ObservableCollection<DirectionStopSQL> Trolls;
+        ObservableCollection<DirectionStopSQL> Tramms;
 
         private async Task LoadRoutes(StopNameAllSQL param)
         {
             SQLiteConnection connection = new SQLiteConnection(dbPath);
-            Buses = new List<DirectionStopSQL>();
-            Trolls = new List<DirectionStopSQL>();
-            Tramms = new List<DirectionStopSQL>();
+            Buses = new ObservableCollection<DirectionStopSQL>();
+            Trolls = new ObservableCollection<DirectionStopSQL>();
+            Tramms = new ObservableCollection<DirectionStopSQL>();
             var items = connection.Query<DirectionStopSQL>(
                 "SELECT s.r_id as r_id, s.n_id as n_id, s.d_id as d_id,s.favorite as favorite,d.name as name, r.number as number, s.schedule as schedule, s.days as days, r.type as type " +
                 "FROM stop AS s " +
@@ -118,9 +122,11 @@ namespace New_Goes.Views
                 {
                     Buses.Add(new DirectionStopSQL()
                     {
+                        width = param.width,
                         name = item.name,
                         r_id = item.r_id,
                         number = item.number,
+                        type = item.type,
                         d_id = item.d_id,
                         n_id = item.n_id,
                         days = item.days,
@@ -132,10 +138,12 @@ namespace New_Goes.Views
                 {
                     Trolls.Add(new DirectionStopSQL()
                     {
+                        width = param.width,
                         name = item.name,
                         r_id = item.r_id,
                         number = item.number,
                         d_id = item.d_id,
+                        type = item.type,
                         n_id = item.n_id,
                         days = item.days,
                         schedule = item.schedule,
@@ -146,10 +154,12 @@ namespace New_Goes.Views
                 {
                     Tramms.Add(new DirectionStopSQL()
                     {
+                        width = param.width,
                         name = item.name,
                         r_id = item.r_id,
                         number = item.number,
                         d_id = item.d_id,
+                        type = item.type,
                         n_id = item.n_id,
                         days = item.days,
                         schedule = item.schedule,
@@ -223,11 +233,17 @@ namespace New_Goes.Views
             DirectionStopSQL paramItem = e.ClickedItem as DirectionStopSQL;
             ScheduleSQL mainSchedule = new ScheduleSQL()
             {
+                favorite = (paramItem.favorite == Constant.FavoriteStar) ? true : false,
+                type = paramItem.type,
+                width = param.width,
                 days = paramItem.days,
                 schedule = paramItem.schedule,
                 number = paramItem.number,
                 d_name = paramItem.name,
                 s_name = param.name,
+                d_id = paramItem.d_id,
+                r_id = paramItem.r_id,
+                n_id = paramItem.n_id
             };
             if (!Frame.Navigate(typeof(Views.MainSchedule), mainSchedule))
             {
@@ -238,7 +254,43 @@ namespace New_Goes.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             DirectionStopSQL model = (((sender as Button).Parent as Border).Parent as Grid).DataContext as DirectionStopSQL;
-            Database.AddOrRemoveFromFavorite(model.n_id, model.r_id, model.d_id);
+            if (model.type == 0)
+            {
+                Buses.Where(d => d.d_id == model.d_id).First().Favorite = (model.favorite == Constant.FavoriteStar) ? Constant.UnFavoriteStar : Constant.FavoriteStar;
+            }
+            else if (model.type == 1)
+            {
+                Trolls.Where(d => d.d_id == model.d_id).First().Favorite = (model.favorite == Constant.FavoriteStar) ? Constant.UnFavoriteStar : Constant.FavoriteStar;
+            }
+            else if (model.type == 2)
+            {
+                Tramms.Where(d => d.d_id == model.d_id).First().Favorite = (model.favorite == Constant.FavoriteStar) ? Constant.UnFavoriteStar : Constant.FavoriteStar;
+            }
+           Database.AddOrRemoveFromFavorite(model.n_id, model.r_id, model.d_id);
+        }
+
+        private void AddAllStops_Button(object sender, RoutedEventArgs e)
+        {
+            this.DefaultViewModel["Favorite"] = MainAddButton.Symbol.ToString() == Constant.UnFavoriteStar ? Constant.FavoriteStar : Constant.UnFavoriteStar;
+            if(Buses.Count != 0) {
+                foreach(var bus in Buses) {
+                    bus.Favorite = this.DefaultViewModel["Favorite"].ToString();
+                }
+            }
+            if (Trolls.Count != 0)
+            {
+                foreach (var troll in Trolls)
+                {
+                    troll.Favorite = this.DefaultViewModel["Favorite"].ToString();
+                }
+            }
+            if(Tramms.Count != 0) {
+                foreach (var tramm in Tramms)
+                {
+                    tramm.Favorite = this.DefaultViewModel["Favorite"].ToString();
+                }
+            }
+            Database.AddOrRemoveFromFavoriteWholeStop(Int32.Parse(param.id));
         }
     }
 }

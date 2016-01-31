@@ -127,6 +127,26 @@
                     </StackPanel>
                 </Grid>
             </PivotItem>
+            <PivotItem>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="BaseTextBlockStyle" Style="{ThemeResource BaseTextBlockStyle}"/>
+                    <TextBlock Text="BodyTextBlockStyle" Style="{ThemeResource BodyTextBlockStyle}"/>
+                    <TextBlock Text="ComboBoxPlaceholderTextBlockStyle" Style="{ThemeResource ComboBoxPlaceholderTextBlockStyle}"/>
+                    <TextBlock Text="ControlContextualInfoTextBlockStyle" Style="{ThemeResource ControlContextualInfoTextBlockStyle}"/>
+                    <TextBlock Text="ControlHeaderTextBlockStyle" Style="{ThemeResource ControlHeaderTextBlockStyle}"/>
+                    <TextBlock Text="FlyoutPickerTitleTextBlockStyle" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}"/>
+                    <TextBlock Text="GroupHeaderTextBlockStyle" Style="{ThemeResource GroupHeaderTextBlockStyle}"/>
+                    <TextBlock Text="HeaderTextBlockStyle" Style="{ThemeResource HeaderTextBlockStyle}"/>
+                    <TextBlock Text="ListViewEmptyStaticTextBlockStyle" Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}"/>
+                    <TextBlock Text="ListViewItemContentTextBlockStyle" Style="{ThemeResource ListViewItemContentTextBlockStyle}"/>
+                    <TextBlock Text="ListViewItemSubheaderTextBlockStyle" Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
+                    <TextBlock Text="ListViewItemTextBlockStyle" Style="{ThemeResource ListViewItemTextBlockStyle}"/>
+                    <TextBlock Text="MessageDialogContentStyle" Style="{ThemeResource MessageDialogContentStyle}"/>
+                    <TextBlock Text="MessageDialogTitleStyle" Style="{ThemeResource MessageDialogTitleStyle}"/>
+                    <TextBlock Text="SubheaderTextBlockStyle" Style="{ThemeResource SubheaderTextBlockStyle}"/>
+                    <TextBlock Text="TitleTextBlockStyle" Style="{ThemeResource TitleTextBlockStyle}"/>
+                </StackPanel>
+            </PivotItem>
         </Pivot>
     </Grid>
 </Page>

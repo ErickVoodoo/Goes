@@ -47,5 +47,40 @@ namespace New_Goes.CommonAPI
                 connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=1 WHERE n_id={0} AND r_id={1} AND d_id={2}", s_id, r_id, d_id));
             }
         }
+
+        public static void AddOrRemoveFromFavoriteWholeStop(int s_id)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            if (connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0} AND s.favorite=1", s_id)).Count ==
+                connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0}", s_id)).Count)
+            {
+                connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=0 WHERE n_id={0}", s_id));
+            }
+            else
+            {
+                connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=1 WHERE n_id={0}", s_id));
+            }
+        }
+
+        public static void RemoveWholeStops(int s_id)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=0 WHERE n_id={0}", s_id));
+        }
+
+        public static bool IfAllStopsAreFavorite(int s_id)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+
+            if (connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0} AND s.favorite=1", s_id)).Count ==
+                connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0}", s_id)).Count)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
