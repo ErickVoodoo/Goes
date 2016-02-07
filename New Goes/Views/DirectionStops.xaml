@@ -66,25 +66,28 @@
                 </ListView.ItemContainerTransitions>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Width="{Binding Path=width}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <Rectangle Height="0.5" Fill="LightGray" Margin="9.5,0,9.5,0" HorizontalAlignment="Stretch"/>
+                            <Grid Width="{Binding Path=width}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <StackPanel Margin="9.5,0,0,0" Grid.Column="0" VerticalAlignment="Center" Orientation="Vertical">
-                                <TextBlock Text="{Binding Path=name}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding Path=next_bus}" Style="{ThemeResource ListViewItemContentTextBlockStyle}" VerticalAlignment="Center"/>
-                            </StackPanel> 
+                                <StackPanel Margin="9.5,0,4.5,0" Grid.Column="0" VerticalAlignment="Center" Orientation="Vertical">
+                                    <TextBlock Text="{Binding Path=name}" Style="{ThemeResource MessageDialogContentStyle}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Path=next_bus}" Style="{ThemeResource ControlContextualInfoTextBlockStyle}" VerticalAlignment="Center"/>
+                                </StackPanel> 
 
-                            <Border Grid.Column="1" Margin="9.5,0,9.5,0" HorizontalAlignment="Left">
-                                <Button MinWidth="35" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
-                                    <Button.Content>
-                                        <SymbolIcon Symbol="{Binding Path=favorite}"/>
-                                    </Button.Content>
-                                </Button>
-                            </Border>
-                        </Grid>
+                                <Border Grid.Column="1" Margin="9.5,0,9.5,0" HorizontalAlignment="Left">
+                                    <Button MinWidth="35" Click="Button_Click" BorderThickness="0" BorderBrush="Transparent">
+                                        <Button.Content>
+                                            <SymbolIcon Symbol="{Binding Path=favorite}"/>
+                                        </Button.Content>
+                                    </Button>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -49,7 +49,7 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <Button IsEnabled="False" x:Name="LoadSchedule" Click="LoadSchedule_Click" HorizontalAlignment="Stretch" BorderThickness="0.5,0.5,0.5,0.5"/>
+            <Button IsEnabled="False" x:Uid="Loading_ButtonLoad" x:Name="LoadSchedule" Click="LoadSchedule_Click" HorizontalAlignment="Stretch" BorderThickness="0.5,0.5,0.5,0.5"/>
         </Grid>
     </Grid>
 </Page>

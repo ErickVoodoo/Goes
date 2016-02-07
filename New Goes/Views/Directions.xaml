@@ -34,7 +34,7 @@
 
         <StackPanel Grid.Row="0" Margin="9.5,0,0,9.5">
             <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
-            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontSize="24" Text="{Binding Title}"/>
+            <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontSize="24" x:Uid="HeaderTitleTransport"/>
         </StackPanel>
 
         <Pivot Grid.Row="1" x:Name="PivotMain">
@@ -45,7 +45,7 @@
                     </Grid>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
-            <PivotItem x:Name="PItemBus" Header="автобусы" Margin="0">
+            <PivotItem x:Name="PItemBus" x:Uid="Directions_PivotItem_Bus" Margin="0">
                 <ListView SelectionMode="None"  IsItemClickEnabled="True" ItemClick="ListView_ItemClick" ItemsSource="{Binding Buses}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -72,7 +72,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem x:Name="PItemTroll" Header="троллейбусы" Margin="0">
+            <PivotItem x:Name="PItemTroll" x:Uid="Directions_PivotItem_Troll" Margin="0">
                 <ListView SelectionMode="None"  IsItemClickEnabled="True" ItemClick="ListView_ItemClick" ItemsSource="{Binding Trolls}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -99,7 +99,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem x:Name="PItemTramm" Header="трамваи" Margin="0">
+            <PivotItem x:Name="PItemTramm" x:Uid="Directions_PivotItem_Tramm" Margin="0">
                 <ListView SelectionMode="None"  IsItemClickEnabled="True" ItemsSource="{Binding Tramms}" ItemClick="ListView_ItemClick">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>

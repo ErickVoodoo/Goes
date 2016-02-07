@@ -118,12 +118,29 @@
                     <StackPanel Orientation="Vertical">
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonUpdateDatabase" Click="Update_Schedule"/>
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonChangeCity" Click="Button_Click"/>
-                        <TextBlock x:Name="TextBlock_ReloadApp" Foreground="Red" HorizontalAlignment="Stretch" TextWrapping="Wrap"  Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
+                        <TextBlock Visibility="Collapsed" x:Uid="Reload_Application" x:Name="TextBlock_ReloadApp" Foreground="Red" HorizontalAlignment="Stretch" TextWrapping="Wrap"  Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
                         <ToggleSwitch x:Name="Toggle_Theme" Toggled="ToggleSwitch_Toggled"/>
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonRate"/>
-                        <TextBlock Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center">
-                                упрощенная версия приложения Goes - транспорт Беларуси
-                        </TextBlock>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" x:Uid="MainMenuSettings_TextCurrentDatabase" Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="1" x:Name="Settings_Latest_Database" Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" x:Uid="MainMenuSettings_TextServerDatabase" Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center"/>
+                            <TextBlock Grid.Column="1" x:Name="Settings_Newest_Database" Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center"/>
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </PivotItem>

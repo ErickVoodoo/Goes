@@ -120,6 +120,36 @@
   <data name="applicationName.Text" xml:space="preserve">
     <value>Goes</value>
   </data>
+  <data name="Directions_PivotItem_Bus.Header" xml:space="preserve">
+    <value>автобусы</value>
+  </data>
+  <data name="Directions_PivotItem_Tramm.Header" xml:space="preserve">
+    <value>трамваи</value>
+  </data>
+  <data name="Directions_PivotItem_Troll.Header" xml:space="preserve">
+    <value>троллейбусы</value>
+  </data>
+  <data name="GlobalLoading" xml:space="preserve">
+    <value>загрузка...</value>
+  </data>
+  <data name="GlobalLoadingSuccess" xml:space="preserve">
+    <value>успешно</value>
+  </data>
+  <data name="HeaderTitleFavorites.Text" xml:space="preserve">
+    <value>избранные</value>
+  </data>
+  <data name="HeaderTitleFBus.Text" xml:space="preserve">
+    <value>маршрутные такси</value>
+  </data>
+  <data name="HeaderTitleStops.Text" xml:space="preserve">
+    <value>остановки</value>
+  </data>
+  <data name="HeaderTitleTaxi.Text" xml:space="preserve">
+    <value>такси</value>
+  </data>
+  <data name="HeaderTitleTransport.Text" xml:space="preserve">
+    <value>транспорт</value>
+  </data>
   <data name="MainMenuSettings_ButtonChangeCity.Content" xml:space="preserve">
     <value>изменить город</value>
   </data>
@@ -129,19 +159,67 @@
   <data name="MainMenuSettings_ButtonUpdateDatabase.Content" xml:space="preserve">
     <value>обновить расписание</value>
   </data>
+  <data name="MainMenuSettings_TextCurrentDatabase.Text" xml:space="preserve">
+    <value>текущая версия расписания</value>
+  </data>
+  <data name="MainMenuSettings_TextServerDatabase.Text" xml:space="preserve">
+    <value>новая версия расписания</value>
+  </data>
   <data name="MainMenu_PivotItemMenu.Header" xml:space="preserve">
     <value>меню</value>
   </data>
   <data name="MainMenu_PivotItemSettings.Header" xml:space="preserve">
     <value>настройки</value>
   </data>
+  <data name="MainSchedule_PivotFriday.Header" xml:space="preserve">
+    <value>пятница</value>
+  </data>
+  <data name="MainSchedule_PivotMonday.Header" xml:space="preserve">
+    <value>понедельник</value>
+  </data>
+  <data name="MainSchedule_PivotSaturday.Header" xml:space="preserve">
+    <value>суббота</value>
+  </data>
+  <data name="MainSchedule_PivotSunday.Header" xml:space="preserve">
+    <value>воскресенье</value>
+  </data>
+  <data name="MainSchedule_PivotThursday.Header" xml:space="preserve">
+    <value>четверг</value>
+  </data>
+  <data name="MainSchedule_PivotTuesday.Header" xml:space="preserve">
+    <value>вторник</value>
+  </data>
+  <data name="MainSchedule_PivotWednesday.Header" xml:space="preserve">
+    <value>среда</value>
+  </data>
   <data name="NavigationFailedExceptionMessage" xml:space="preserve">
     <value>Navigation failed.</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
+  <data name="Reload_Application" xml:space="preserve">
+    <value>перезагрузите приложение для применения настроек</value>
+  </data>
+  <data name="SearchFBus.PlaceholderText" xml:space="preserve">
+    <value>поиск по имени, направлению,номеру</value>
+  </data>
+  <data name="SearchStops.PlaceholderText" xml:space="preserve">
+    <value>поиск по имени</value>
+  </data>
+  <data name="SearchTaxi.PlaceholderText" xml:space="preserve">
+    <value>поиск по имени,описанию</value>
+  </data>
+  <data name="TitleFBus" xml:space="preserve">
+    <value>маршрутные такси</value>
+  </data>
+  <data name="TitleTaxi" xml:space="preserve">
+    <value>такси</value>
   </data>
   <data name="type" xml:space="preserve">
     <value>ru</value>
+  </data>
+  <data name="Loading_ButtonLoad.Content" xml:space="preserve">
+    <value>выбрать</value>
+  </data>
+  <data name="ScheduleFinished" xml:space="preserve">
+    <value>окончен</value>
   </data>
 </root>

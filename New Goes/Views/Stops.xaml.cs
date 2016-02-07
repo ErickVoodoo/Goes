@@ -105,9 +105,9 @@ namespace New_Goes.Views
                 Transport.Add(new StopNameAllSQL()
                 {
                     id = item.id,
-                    isBus = buses.Find(x => x.name == item.name) != null ? "/Assets/MenuItemsLogo/ic_bus_24dp.png" : null,
-                    isTroll = trolls.Find(x => x.name == item.name) != null ? "/Assets/MenuItemsLogo/ic_troll_24dp.png" : null,
-                    isTramm = tramms.Find(x => x.name == item.name) != null ? "/Assets/MenuItemsLogo/ic_tram_24dp.png" : null,
+                    isBus = buses.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_bus_white.png" : "/Assets/MenuItemsLogo/ic_bus_black.png") : null,
+                    isTroll = trolls.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_troll_white.png" : "/Assets/MenuItemsLogo/ic_troll_black.png") : null,
+                    isTramm = tramms.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_tramm_white.png" : "/Assets/MenuItemsLogo/ic_tramm_black.png") : null,
                     name = item.name,
                     width = screenWidth
                 });
@@ -167,9 +167,9 @@ namespace New_Goes.Views
             {
                 this.navigationHelper.OnNavigatedTo(e);
                 screenWidth = Window.Current.Bounds.Width;
-                Constant.Loader("Загрузка остановок...", true);
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
                 await Task.Run(() => LoadStopNames());
-                Constant.Loader("Загружено", false);
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
                 isLoaded = true;
             }           
         }

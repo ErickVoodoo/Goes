@@ -1,5 +1,8 @@
 ﻿using New_Goes.Common;
 using New_Goes.CommonAPI;
+using New_Goes.Data;
+using New_Goes.Model;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,11 +10,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
-using Windows.UI.ViewManagement;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,26 +24,31 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
+// The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkID=391641
 
-namespace New_Goes
+namespace New_Goes.Views.Taxi
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page that displays details for a single item within a group.
     /// </summary>
-    public sealed partial class Loading : Page
+    public sealed partial class Selector : Page
     {
-        private NavigationHelper navigationHelper;
+        private readonly NavigationHelper navigationHelper;
+        private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public Loading()
+        string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+
+        bool isLoaded = false;
+
+        public Selector()
         {
             this.InitializeComponent();
 
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
+            NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         /// <summary>
@@ -60,33 +69,45 @@ namespace New_Goes
         }
 
         /// <summary>
-        /// Populates the page with content passed during navigation.  Any saved state is also
+        /// Populates the page with content passed during navigation. Any saved state is also
         /// provided when recreating a page from a prior session.
         /// </summary>
         /// <param name="sender">
-        /// The source of the event; typically <see cref="NavigationHelper"/>
+        /// The source of the event; typically <see cref="NavigationHelper"/>.
         /// </param>
         /// <param name="e">Event data that provides both the navigation parameter passed to
         /// <see cref="Frame.Navigate(Type, Object)"/> when this page was initially requested and
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
-        private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+        private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            this.defaultViewModel["Cities"] = Constant.City;
-            cities = Constant.City;
+            if (!isLoaded)
+            {
+                this.DefaultViewModel["Title"] = "Такси";
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
+                await Task.Run(() => LoadRoutes());
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
+                isLoaded = true;
+            }
         }
+
+        private async Task LoadRoutes()
+        {
+            this.DefaultViewModel["Taxis"] = Constant.CityTaxis;
+        }
+
 
         /// <summary>
         /// Preserves state associated with this page in case the application is suspended or the
         /// page is discarded from the navigation cache.  Values must conform to the serialization
         /// requirements of <see cref="SuspensionManager.SessionState"/>.
         /// </summary>
-        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/></param>
+        /// <param name="sender">The source of the event; typically <see cref="NavigationHelper"/>.</param>
         /// <param name="e">Event data that provides an empty dictionary to be populated with
         /// serializable state.</param>
-        StaticData[] cities;
         private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
         {
+            // TODO: Save the unique state of the page here.
         }
 
         #region NavigationHelper registration
@@ -95,69 +116,38 @@ namespace New_Goes
         /// The methods provided in this section are simply used to allow
         /// NavigationHelper to respond to the page's navigation methods.
         /// <para>
-        /// Page specific logic should be placed in event handlers for the  
+        /// Page specific logic should be placed in event handlers for the
         /// <see cref="NavigationHelper.LoadState"/>
         /// and <see cref="NavigationHelper.SaveState"/>.
-        /// The navigation parameter is available in the LoadState method 
+        /// The navigation parameter is available in the LoadState method
         /// in addition to page state preserved during an earlier session.
         /// </para>
         /// </summary>
         /// <param name="e">Provides data for navigation methods and event
         /// handlers that cannot cancel the navigation request.</param>
+        /// 
+        double currentWidth;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            currentWidth = Window.Current.Bounds.Width;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedFrom(e);
+            if (e.NavigationMode == NavigationMode.Back)
+                NavigationCacheMode = NavigationCacheMode.Disabled;
         }
 
         #endregion
-        StaticData selected;
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            LoadSchedule.IsEnabled = true;
-            Button button = sender as Button;
-            selected = ((sender as Button).Parent as Grid).DataContext as StaticData;
-            for (int i = 0; i < Constant.City.Length; i++)
+            if (!Frame.Navigate(typeof(Views.Taxi.Cities.First), e.ClickedItem as StaticFBusesData))
             {
-                if (cities[i].key == selected.key)
-                {
-                    cities[i].background = "LightGray";
-                }
-                else
-                {
-                    cities[i].background = "Transparent";
-                }
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
-            Cities.ItemsSource = null;
-            Cities.ItemsSource = cities;
-        }
-
-        private async void LoadSchedule_Click(object sender, RoutedEventArgs e)
-        {
-            Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
-            LoadSchedule.IsEnabled = false;
-            Cities.IsEnabled = false;
-            Database.DropDatabase();
-            Status status = await Task.Run(() => loadSchedule());
-            if (status.isSuccess)
-            {
-                Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
-                LocalProperties.SaveToLP(LocalProperties.LP_selected_city, selected.key);
-                if (!Frame.Navigate(typeof(HubPage)))
-                {
-                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-                }
-            }
-        }
-
-        public async Task<Status> loadSchedule() {
-            Schedule schedule = new Schedule();
-            return await schedule.GetSchedule(selected.value);
         }
     }
 }

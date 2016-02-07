@@ -4,12 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 
 namespace New_Goes.CommonAPI
 {
     public class Time
     {
-
+        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
         public List<List<TimeView>> getScheduleList(double width, string days, string schedule)
         {
             List<List<TimeView>> result = new List<List<TimeView>>();
@@ -67,33 +68,61 @@ namespace New_Goes.CommonAPI
             int current_week_day = getWeekDay();
             int last_week_day = getLastWeekDay();
 
+            int currentHour = DateTime.Now.Hour >= 0 && DateTime.Now.Hour <= 3 ? 24 + DateTime.Now.Hour : DateTime.Now.Hour;
+            int currenMinute = DateTime.Now.Minute;
+
             string[] scheduleArray = schedule.Split('&');
             string[] daysArray = days.Split(',');
             string current_day = daysArray[getWeekDay()];
 
-            /*if (int.Parse(daysArray[last_week_day]) != -1 && DateTime.Now.Hour >= 0 && DateTime.Now.Hour <= 4)
+            if (int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
             {
                 string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[last_week_day])].Split(',');
-                if (int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > DateTime.Now.Hour * 24 + DateTime.Now.Minute)
+                if (int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > currentHour * 60 + currenMinute)
                     current_week_day = last_week_day;
-            }*/
+            }
+
+            if (current_week_day == getWeekDay())
+                currentHour = DateTime.Now.Hour;
 
             if (int.Parse(daysArray[current_week_day]) != -1)
             {
                 string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[current_week_day])].Split(',');
                 for (int j = 0; j < scheduleDayArray.Length; j++)
                 {
-                    HM hm = getHourMinute(scheduleDayArray[j]);
-                   
-                    if (hm.hour * 24 + hm.minute >= DateTime.Now.Hour * 24 + DateTime.Now.Minute)
-                    {
-                        HM last = getHourMinute(scheduleDayArray[j + 1]);
-                        HM current = getHourMinute(((last.hour * 24 + last.minute) - (DateTime.Now.Hour * 24 + DateTime.Now.Minute)).ToString());
-                        return current.hour + " " + current.minute;
+                    if (scheduleDayArray[j] != "") { 
+                        HM hm = getHourMinute(scheduleDayArray[j]);
+
+                        if (hm.hour * 60 + hm.minute >= currentHour * 60 + currenMinute)
+                        {
+                            HM current = getHourMinute(((hm.hour * 60 + hm.minute) - (currentHour * 60 + currenMinute)).ToString());
+                            return (current.hour == 0 ? "" : current.hour.ToString() + " ч.") + " " + current.minute + " м.";
+                        }
                     }
                 }
             }
-            return "окончен";
+            return this.resourceLoader.GetString("ScheduleFinished");
+        }
+
+        public static int getCurrentDaySchedule(string schedule, string days)
+        {
+            int current_week_day = getWeekDay();
+            int last_week_day = getLastWeekDay();
+
+            int currentHour = DateTime.Now.Hour >= 0 && DateTime.Now.Hour <= 3 ? 24 + DateTime.Now.Hour : DateTime.Now.Hour;
+            int currenMinute = DateTime.Now.Minute;
+
+            string[] scheduleArray = schedule.Split('&');
+            string[] daysArray = days.Split(',');
+            string current_day = daysArray[getWeekDay()];
+
+            if (int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
+            {
+                string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[last_week_day])].Split(',');
+                if (int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > currentHour * 60 + currenMinute)
+                    return last_week_day;
+            }
+            return current_week_day;
         }
 
         public static int getWeekDay() 

@@ -141,4 +141,85 @@
   <data name="type" xml:space="preserve">
     <value>en</value>
   </data>
+  <data name="Directions_PivotItem_Bus.Header" xml:space="preserve">
+    <value>buses</value>
+  </data>
+  <data name="Directions_PivotItem_Tramm.Header" xml:space="preserve">
+    <value>tramms</value>
+  </data>
+  <data name="Directions_PivotItem_Troll.Header" xml:space="preserve">
+    <value>trolleys</value>
+  </data>
+  <data name="GlobalLoading" xml:space="preserve">
+    <value>loading...</value>
+  </data>
+  <data name="GlobalLoadingSuccess" xml:space="preserve">
+    <value>success</value>
+  </data>
+  <data name="HeaderTitleFavorites.Text" xml:space="preserve">
+    <value>favorites</value>
+  </data>
+  <data name="HeaderTitleFBus.Text" xml:space="preserve">
+    <value>minubus taxi</value>
+  </data>
+  <data name="HeaderTitleStops.Text" xml:space="preserve">
+    <value>stops</value>
+  </data>
+  <data name="HeaderTitleTaxi.Text" xml:space="preserve">
+    <value>taxi</value>
+  </data>
+  <data name="HeaderTitleTransport.Text" xml:space="preserve">
+    <value>transport</value>
+  </data>
+  <data name="MainMenuSettings_TextCurrentDatabase.Text" xml:space="preserve">
+    <value>current schedule version</value>
+  </data>
+  <data name="MainMenuSettings_TextServerDatabase.Text" xml:space="preserve">
+    <value>new schedule version</value>
+  </data>
+  <data name="MainSchedule_PivotFriday.Header" xml:space="preserve">
+    <value>friday</value>
+  </data>
+  <data name="MainSchedule_PivotMonday.Header" xml:space="preserve">
+    <value>monday</value>
+  </data>
+  <data name="MainSchedule_PivotSaturday.Header" xml:space="preserve">
+    <value>saturday</value>
+  </data>
+  <data name="MainSchedule_PivotSunday.Header" xml:space="preserve">
+    <value>sunday</value>
+  </data>
+  <data name="MainSchedule_PivotThursday.Header" xml:space="preserve">
+    <value>thursday</value>
+  </data>
+  <data name="MainSchedule_PivotTuesday.Header" xml:space="preserve">
+    <value>tuesday</value>
+  </data>
+  <data name="MainSchedule_PivotWednesday.Header" xml:space="preserve">
+    <value>wednesday</value>
+  </data>
+  <data name="Reload_Application" xml:space="preserve">
+    <value>restart the application to apply the new settings</value>
+  </data>
+  <data name="SearchFBus.PlaceholderText" xml:space="preserve">
+    <value>search name and direction</value>
+  </data>
+  <data name="SearchStops.PlaceholderText" xml:space="preserve">
+    <value>search stops by name</value>
+  </data>
+  <data name="SearchTaxi.PlaceholderText" xml:space="preserve">
+    <value>search by name,description</value>
+  </data>
+  <data name="TitleFBus" xml:space="preserve">
+    <value>minubus taxi</value>
+  </data>
+  <data name="TitleTaxi" xml:space="preserve">
+    <value>taxi</value>
+  </data>
+  <data name="Loading_ButtonLoad.Content" xml:space="preserve">
+    <value>choose</value>
+  </data>
+  <data name="ScheduleFinished" xml:space="preserve">
+    <value>finished</value>
+  </data>
 </root>

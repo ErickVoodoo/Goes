@@ -20,6 +20,8 @@ namespace New_Goes.CommonAPI
             connection.CreateTableAsync<Stop>();
             connection.CreateTableAsync<StopName>();
             connection.CreateTableAsync<Pointer>();
+            connection.CreateTableAsync<FBusSQL>();
+            connection.CreateTableAsync<TaxiSQL>();
         }
 
         public static void DropDatabase()
@@ -32,6 +34,38 @@ namespace New_Goes.CommonAPI
             connection.QueryAsync<StopName>("DROP TABLE IF EXISTS stopname");
             connection.QueryAsync<Pointer>("DROP TABLE IF EXISTS pointer");
             CreateTables();
+        }
+
+        public static string GetTaxiJSON(string city)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            var taxi = connection.Query<Model.FBusSQL>(String.Format("SELECT * FROM taxisql WHERE city='{0}'", city));
+
+            return taxi.Count == 0 ? null : taxi[0].json;
+        }
+
+        public static void AddTaxi(string city, string json)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            connection.Insert(new TaxiSQL() { city = city, json = json });
+        }
+
+        public static string GetFBusJSON(string city)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            var fbus = connection.Query<Model.FBusSQL>(String.Format("SELECT * FROM fbussql WHERE city='{0}'", city));
+
+            return fbus.Count == 0 ? null : fbus[0].json;
+        }
+
+        public static void AddFbus(string city, string json)
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            connection.Insert(new FBusSQL() { city = city, json = json});
         }
 
         public static void AddOrRemoveFromFavorite(int s_id, int r_id, int d_id)

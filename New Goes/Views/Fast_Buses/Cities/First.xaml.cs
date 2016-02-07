@@ -2,17 +2,20 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
+using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -27,12 +30,12 @@ using Windows.UI.Xaml.Navigation;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkID=391641
 
-namespace New_Goes.Views
+namespace New_Goes.Views.Fast_Buses.Cities
 {
     /// <summary>
     /// A page that displays details for a single item within a group.
     /// </summary>
-    public sealed partial class DirectionStops : Page
+    public sealed partial class First : Page
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
@@ -42,7 +45,7 @@ namespace New_Goes.Views
 
         bool isLoaded = false;
 
-        public DirectionStops()
+        public First()
         {
             this.InitializeComponent();
 
@@ -81,54 +84,79 @@ namespace New_Goes.Views
         /// a dictionary of state preserved by this page during an earlier
         /// session.  The state will be null the first time a page is visited.</param>
         /// 
-        DirectionSQL param;
-        Time time = new Time();
+        StaticFBusesData param;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             if (!isLoaded)
             {
+                param = e.NavigationParameter as StaticFBusesData;
+                this.DefaultViewModel["Title"] = this.resourceLoader.GetString("TitleFBus") + "(" + param.title + ")  ";
+                this.DefaultViewModel["City"] = param.title;
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
-                param = e.NavigationParameter as DirectionSQL;
-                this.DefaultViewModel["Number"] = param.number;
-                this.DefaultViewModel["Direction"] = param.name;
-                this.DefaultViewModel["BorderColor"] = Constant.TransportColors[param.type];
-                await Task.Run(() => LoadRoutes(param));
+                await Task.Run(() => LoadRoutes());
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
                 isLoaded = true;
             }
         }
 
-        ObservableCollection<DirectionStopSQL> Stops;
+        List<FBusList> fbuslist;
 
-        private async Task LoadRoutes(DirectionSQL param)
+        private async Task LoadRoutes()
         {
-            SQLiteConnection connection = new SQLiteConnection(dbPath);
-            Stops = new ObservableCollection<DirectionStopSQL>();
-            var items = connection.Query<DirectionStopSQL>(
-                "SELECT s.id as s_id, s.r_id as r_id, s.n_id as n_id, s.d_id as d_id,s.favorite as favorite, sn.name as name, s.schedule as schedule, s.days as days " +
-                "FROM stop AS s " +
-                "LEFT JOIN stopname as sn ON n_id = sn.id " + 
-                "WHERE d_id=" + param.d_id + " " + 
-                "GROUP BY name " +
-                "ORDER BY s_id");
+            fbuslist = new List<FBusList>();
 
-            foreach (var item in items)
+            string FBus = Database.GetFBusJSON(param.key);
+            string result = "";
+            if (FBus == null)
             {
-                Stops.Add(new DirectionStopSQL()
-                    {
-                        width = param.width,
-                        name = item.name,
-                        r_id = item.r_id,
-                        d_id = item.d_id,
-                        n_id = item.n_id,
-                        days = item.days,
-                        next_bus = time.getNextBusTime(item.schedule, item.days),
-                        favorite = Int32.Parse(item.favorite) == 1 ? Constant.FavoriteStar : Constant.UnFavoriteStar,
-                        schedule = item.schedule
-                    });
+                var data = new List<KeyValuePair<string, string>>
+                {
+                    new KeyValuePair<string, string>("secret", Constant.PREMIUM_API_KEY),
+                    new KeyValuePair<string, string>("city", param.key),
+                };
+                string res = Constant.GetJsonFromURI(param.value, data).Result;
+                JObject obj = JObject.Parse(res);
+                result = obj["message"].ToString();
+            }
+            else
+            {
+                result = FBus;
             }
 
-            this.DefaultViewModel["Stops"] = Stops.Count != 0 ? Stops : null;
+
+            FBus BUS = JsonConvert.DeserializeObject<FBus>(result);
+
+            if (FBus == null)
+            {
+                Database.AddFbus(param.key, result);
+            }
+
+            foreach (ScheduleObj schedule in BUS.schedule)
+            {
+                fbuslist.Add(new FBusList()
+                {
+                    direction = BUS.title.direction,
+                    interval = BUS.title.interval,
+                    number = BUS.title.number,
+                    alternative = BUS.title.alternative,
+                    time_available = BUS.title.time_available,
+                    name = BUS.title.name,
+
+                    direction_schedule = schedule.direction,
+                    interval_schedule = schedule.interval,
+                    number_schedule = schedule.number,
+                    alternative_schedule = schedule.alternative,
+                    time_available_schedule = schedule.time_available,
+                    name_schedule = schedule.name,
+                    width = currentWidth,
+
+                    isNameVisible = schedule.name == null || schedule.name == " " ? "Collapsed" : "Visible",
+                    isAltVisible = schedule.alternative == null || schedule.alternative == " " ? "Collapsed" : "Visible",
+                    isTimeAvVisible = schedule.time_available == null || schedule.time_available == " " ? "Collapsed" : "Visible"
+                });
+            }
+
+            this.DefaultViewModel["FBuses"] = fbuslist;
         }
 
 
@@ -161,9 +189,11 @@ namespace New_Goes.Views
         /// <param name="e">Provides data for navigation methods and event
         /// handlers that cannot cancel the navigation request.</param>
         /// 
+        double currentWidth;
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            currentWidth = Window.Current.Bounds.Width;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -175,34 +205,9 @@ namespace New_Goes.Views
 
         #endregion
 
-        private void ListView_ItemClick(object sender, ItemClickEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DirectionStopSQL paramItem = e.ClickedItem as DirectionStopSQL;
-            ScheduleSQL mainSchedule = new ScheduleSQL()
-            {
-                favorite = (paramItem.favorite == Constant.FavoriteStar) ? true : false,
-                type = param.type,
-                width = param.width,
-                days = paramItem.days,
-                schedule = paramItem.schedule,
-                number = param.number,
-                d_name = param.name,
-                s_name = paramItem.name,
-                d_id = paramItem.d_id,
-                r_id = paramItem.r_id,
-                n_id = paramItem.n_id
-            };
-            if (!Frame.Navigate(typeof(Views.MainSchedule), mainSchedule))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            DirectionStopSQL model = (((sender as Button).Parent as Border).Parent as Grid).DataContext as DirectionStopSQL;
-            Stops.Where(d => d.n_id == model.n_id).First().Favorite = (model.favorite == Constant.FavoriteStar) ? Constant.UnFavoriteStar : Constant.FavoriteStar;
-            Database.AddOrRemoveFromFavorite(model.n_id, model.r_id, model.d_id);
+            this.DefaultViewModel["FBuses"] = fbuslist.Where(text => (text.number_schedule.ToUpper().Contains((sender as TextBox).Text.ToUpper())) || (text.direction_schedule.ToUpper().Contains((sender as TextBox).Text.ToUpper())));
         }
     }
 }

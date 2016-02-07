@@ -14,11 +14,25 @@
         "position" : "1"
     },
     {
-        "name" : "избранное",
-        "description" : "ваши избранные остановки",
+        "name": "избранное",
+        "description": "ваши избранные остановки",
         "img_white": "/Assets/MenuItemsLogo/fav_white.png",
         "img_black": "/Assets/MenuItemsLogo/fav_black.png",
-        "position" : "2"
+        "position": "2"
+    },
+    {
+        "name": "маршрутки",
+        "description": "маршрутные такси городов",
+        "img_white": "/Assets/MenuItemsLogo/fbus_white.png",
+        "img_black": "/Assets/MenuItemsLogo/fbus_black.png",
+        "position": "3"
+    },
+    {
+        "name" : "такси",
+        "description" : "номера такси вашего города",
+        "img_white": "/Assets/MenuItemsLogo/taxi_white.png",
+        "img_black": "/Assets/MenuItemsLogo/taxi_black.png",
+        "position" : "4"
     }
 ]
 }

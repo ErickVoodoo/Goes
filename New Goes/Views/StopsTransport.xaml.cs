@@ -87,13 +87,13 @@ namespace New_Goes.Views
         {
             if (!isLoaded)
             {
-                Constant.Loader("Загрузка транспорта...", true);
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
                 param = e.NavigationParameter as StopNameAllSQL;
                 this.DefaultViewModel["Title"] = param.name; 
                 this.DefaultViewModel["Favorite"] = Database.IfAllStopsAreFavorite(Int32.Parse(param.id)) ? Constant.FavoriteStar : Constant.UnFavoriteStar;
                 await Task.Run(() => LoadRoutes(param));
                 isLoaded = true;
-                Constant.Loader("Успешно", false);
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
             }
         }
 
@@ -103,6 +103,7 @@ namespace New_Goes.Views
 
         private async Task LoadRoutes(StopNameAllSQL param)
         {
+            Time time = new Time();
             SQLiteConnection connection = new SQLiteConnection(dbPath);
             Buses = new ObservableCollection<DirectionStopSQL>();
             Trolls = new ObservableCollection<DirectionStopSQL>();
@@ -131,6 +132,7 @@ namespace New_Goes.Views
                         n_id = item.n_id,
                         days = item.days,
                         schedule = item.schedule,
+                        next_bus = time.getNextBusTime(item.schedule, item.days),
                         favorite = Int32.Parse(item.favorite) == 1 ? Constant.FavoriteStar : Constant.UnFavoriteStar
                     });
                 }
@@ -147,6 +149,7 @@ namespace New_Goes.Views
                         n_id = item.n_id,
                         days = item.days,
                         schedule = item.schedule,
+                        next_bus = time.getNextBusTime(item.schedule, item.days),
                         favorite = Int32.Parse(item.favorite) == 1 ? Constant.FavoriteStar : Constant.UnFavoriteStar
                     });
                 }
@@ -163,6 +166,7 @@ namespace New_Goes.Views
                         n_id = item.n_id,
                         days = item.days,
                         schedule = item.schedule,
+                        next_bus = time.getNextBusTime(item.schedule, item.days),
                         favorite = Int32.Parse(item.favorite) == 1 ? Constant.FavoriteStar : Constant.UnFavoriteStar
                     });
                 }
@@ -253,7 +257,7 @@ namespace New_Goes.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DirectionStopSQL model = (((sender as Button).Parent as Border).Parent as Grid).DataContext as DirectionStopSQL;
+            DirectionStopSQL model = (((((sender as Button).Parent as Border).Parent as StackPanel).Parent as Grid).Parent as StackPanel).DataContext as DirectionStopSQL;
             if (model.type == 0)
             {
                 Buses.Where(d => d.d_id == model.d_id).First().Favorite = (model.favorite == Constant.FavoriteStar) ? Constant.UnFavoriteStar : Constant.FavoriteStar;

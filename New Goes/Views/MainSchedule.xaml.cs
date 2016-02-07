@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -34,7 +35,7 @@ namespace New_Goes.Views
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
-
+        private readonly ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
         string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
 
         public MainSchedule()
@@ -78,7 +79,7 @@ namespace New_Goes.Views
         ScheduleSQL param;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            Constant.Loader("Загрузка расписания...", true);
+            Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
             param = e.NavigationParameter as ScheduleSQL;
             this.DefaultViewModel["Direction"] = param.d_name;
             this.DefaultViewModel["Number"] = param.number;
@@ -86,7 +87,7 @@ namespace New_Goes.Views
             this.DefaultViewModel["BorderColor"] = Constant.TransportColors[param.type];
             this.DefaultViewModel["Favorite"] = param.favorite ? Constant.FavoriteStar : Constant.UnFavoriteStar;
             await Task.Run(() => LoadRoutes(param));
-            Constant.Loader("Успешно", false);
+            Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
         }
 
         private async Task LoadRoutes(ScheduleSQL param)
@@ -102,7 +103,7 @@ namespace New_Goes.Views
             this.DefaultViewModel["Saturday"] = list[5];
             this.DefaultViewModel["Sunday"] = list[6];
 
-            int selectedPivot = Time.getWeekDay();
+            int selectedPivot = Time.getCurrentDaySchedule(param.schedule, param.days);
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {

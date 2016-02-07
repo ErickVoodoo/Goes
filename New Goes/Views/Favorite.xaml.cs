@@ -146,9 +146,11 @@ namespace New_Goes.Views
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
              this.navigationHelper.OnNavigatedTo(e);
+             Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
              screenWidth = Window.Current.Bounds.Width;
              await Task.Run(() => LoadStopNames());
-             isLoaded = true;          
+             isLoaded = true;
+             Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)

@@ -94,7 +94,7 @@
                     </Grid>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
-            <PivotItem Header="понедельник" x:Name="PItemMonday">
+            <PivotItem x:Uid="MainSchedule_PivotMonday" x:Name="PItemMonday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Monday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -122,7 +122,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="Tuesday" x:Name="PItemTuesday">
+            <PivotItem x:Uid="MainSchedule_PivotTuesday" x:Name="PItemTuesday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Tuesday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -150,7 +150,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="Wednesday" x:Name="PItemWednesday">
+            <PivotItem x:Uid="MainSchedule_PivotWednesday" x:Name="PItemWednesday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Wednesday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -178,7 +178,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="Thursday" x:Name="PItemThursday">
+            <PivotItem x:Uid="MainSchedule_PivotThursday" x:Name="PItemThursday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Thursday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -206,7 +206,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="Friday" x:Name="PItemFriday">
+            <PivotItem x:Uid="MainSchedule_PivotFriday" x:Name="PItemFriday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Friday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -234,7 +234,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="Saturday" x:Name="PItemSaturday">
+            <PivotItem x:Uid="MainSchedule_PivotSaturday" x:Name="PItemSaturday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Saturday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
@@ -262,7 +262,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </PivotItem>
-            <PivotItem Header="Sunday" x:Name="PItemSunday">
+            <PivotItem x:Uid="MainSchedule_PivotSunday" x:Name="PItemSunday">
                 <ListView SelectionMode="None" ItemsSource="{Binding Sunday}">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>

@@ -14,11 +14,25 @@
         "position" : "1"
     },
     {
-        "name" : "favorites",
-        "description" : "your favorites stops",
+        "name": "favorites",
+        "description": "your favorites stops",
         "img_white": "/Assets/MenuItemsLogo/fav_white.png",
         "img_black": "/Assets/MenuItemsLogo/fav_black.png",
-        "position" : "2"
+        "position": "2"
+    },  
+    {
+        "name": "minubus taxi",
+        "description": "minubus taxis your city",
+        "img_white": "/Assets/MenuItemsLogo/fbus_white.png",
+        "img_black": "/Assets/MenuItemsLogo/fbus_black.png",
+        "position": "3"
+    },
+    {
+        "name" : "taxi",
+        "description" : "taxi numbers your city",
+        "img_white": "/Assets/MenuItemsLogo/taxi_white.png",
+        "img_black": "/Assets/MenuItemsLogo/taxi_black.png",
+        "position" : "4"
     }
 ]
 }

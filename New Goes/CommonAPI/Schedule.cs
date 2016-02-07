@@ -106,6 +106,8 @@ namespace New_Goes.CommonAPI
                 connection.InsertAll(StopNames);
                 connection.InsertAll(Stops);
                 connection.InsertAll(Pointers);
+
+                LocalProperties.SaveToLP(LocalProperties.LP_current_version, jsonObject["version"].GetNumber().ToString());
             }
             catch (Exception e)
             {

@@ -84,9 +84,9 @@ namespace New_Goes.Views
             if (!isLoaded)
             {
                 this.DefaultViewModel["Title"] = "Транспорт";
-                Constant.Loader("Загрузка транспорта...", true);
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
                 await Task.Run(() => LoadRoutes());
-                Constant.Loader("Успешно", false);
+                Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
                 isLoaded = true;
             }
         }

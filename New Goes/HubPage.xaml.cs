@@ -71,9 +71,13 @@ namespace New_Goes
         /// session.  The state will be null the first time a page is visited.</param>
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-            TemplateSource tt = new TemplateSource();
-            var ss = await tt.getMenuItems();
-            this.DefaultViewModel["MenuItems"] = ss;
+            if (!isLoaded)
+            {
+                TemplateSource menu = new TemplateSource();
+                var items_menu = await menu.getMenuItems();
+                this.DefaultViewModel["MenuItems"] = items_menu;
+                isLoaded = true;
+            }
         }
 
         /// <summary>
@@ -116,6 +120,20 @@ namespace New_Goes
                     throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
                 }
             }
+            else if (Int32.Parse(position) == 3)
+            {
+                if (!Frame.Navigate(typeof(Views.Fast_Buses.Selector)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
+            }
+            else if (Int32.Parse(position) == 4)
+            {
+                if (!Frame.Navigate(typeof(Views.Taxi.Selector)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
+            }
         }
 
         #region NavigationHelper registration
@@ -149,9 +167,9 @@ namespace New_Goes
 
         private async void Update_Schedule(object sender, RoutedEventArgs e)
         {
-            Constant.Loader("Обновление расписания...", true);
+            Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
             Status status = await Task.Run(() => updateSchedule());
-            Constant.Loader("Успешно", false);
+            Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
             await new MessageDialog(status.reason).ShowAsync();
         }
 
@@ -159,7 +177,7 @@ namespace New_Goes
         {
             Database.DropDatabase();
             Schedule scedule = new Schedule();
-            return await scedule.GetSchedule(Constant.CITY_MINSK_SCHEDULE);
+            return await scedule.GetSchedule(LocalProperties.LoadFromToLP(LocalProperties.LP_selected_city));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -169,17 +187,57 @@ namespace New_Goes
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
         }
+
         bool isLoadedSettings = false;
-        private void LoadSettings()
+        bool isLoaded = false;
+        private async void LoadSettings()
         {
-            Toggle_Theme.IsOn = LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light;
+            if (!isLoadedSettings)
+            {
+                Toggle_Theme.IsOn = LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light;
+                Settings_Latest_Database.Text = LocalProperties.LoadFromToLP(LocalProperties.LP_current_version);
+
+                New_Goes.CommonAPI.Metadata.StatusMetaData metadata = await Metadata.Get_MetaData();
+                if (metadata.obj != null)
+                {
+                    string city = LocalProperties.LoadFromToLP(LocalProperties.LP_selected_city);
+                    int version = 0;
+
+                    switch (city)
+                    {
+                        case "brest":
+                            version = metadata.obj.cities_versions.brest;
+                            break;
+                        case "vitebsk":
+                            version = metadata.obj.cities_versions.vitebsk;
+                            break;
+                        case "grodno":
+                            version = metadata.obj.cities_versions.grodno;
+                            break;
+                        case "gomel":
+                            version = metadata.obj.cities_versions.gomel;
+                            break;
+                        case "mogilev":
+                            version = metadata.obj.cities_versions.mogilev;
+                            break;
+                        case "minsk":
+                            version = metadata.obj.cities_versions.minsk;
+                            break;
+                    }
+                    Settings_Newest_Database.Text = version.ToString();
+                    if (version > Int32.Parse(LocalProperties.LoadFromToLP(LocalProperties.LP_current_version)))
+                        Constant.ShowNotification("Доступно обновление расписания");
+                }
+            }
+            
             isLoadedSettings = true;
         }
 
         private void ToggleSwitch_Toggled(object sender, RoutedEventArgs e)
         {
             if(isLoadedSettings) {
-                TextBlock_ReloadApp.Text = "перезагрузите приложение для применения настроек темы";
+                TextBlock_ReloadApp.Visibility = Visibility.Visible;
+                TextBlock_ReloadApp.Text = this.resourceLoader.GetString("Reload_Application");
                 if (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) == LocalProperties.theme_light)
                     LocalProperties.SaveToLP(LocalProperties.LP_theme, LocalProperties.theme_dark);
                 else
