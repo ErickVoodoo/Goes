@@ -33,5 +33,7 @@ namespace New_Goes.CommonAPI
 
         public static string LP_selected_city = "selected_city";
         public static string LP_current_version = "current_version";
+
+        public static string LP_active_premium = "active_premium";
     }
 }

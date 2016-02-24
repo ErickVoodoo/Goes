@@ -9,10 +9,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Email;
 using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Store;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -73,11 +76,15 @@ namespace New_Goes
         {
             if (!isLoaded)
             {
-                TemplateSource menu = new TemplateSource();
+                LoadSettingsReboot();
+            }
+        }
+
+        private async void LoadSettingsReboot(){
+            TemplateSource menu = new TemplateSource();
                 var items_menu = await menu.getMenuItems();
                 this.DefaultViewModel["MenuItems"] = items_menu;
                 isLoaded = true;
-            }
         }
 
         /// <summary>
@@ -153,6 +160,10 @@ namespace New_Goes
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.navigationHelper.OnNavigatedTo(e);
+            if((e.Parameter.ToString()) == "true") {
+                isLoadedSettings = false;
+            }
+            Debug.WriteLine("Load:" + isLoadedSettings.ToString());
             LoadSettings();
         }
 
@@ -167,15 +178,31 @@ namespace New_Goes
 
         private async void Update_Schedule(object sender, RoutedEventArgs e)
         {
+            (sender as Button).IsEnabled = false;
+            if (!Constant.checkNetworkConnection())
+            {
+                ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                await new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                return;
+            }
             Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
+            List<Stop> Favorites_Stops = Database.GetAllFavoriteStops();
             Status status = await Task.Run(() => updateSchedule());
             Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
-            await new MessageDialog(status.reason).ShowAsync();
+            foreach(Stop stop in Favorites_Stops) {
+                Database.AddOrRemoveFromFavorite(stop.n_id, stop.r_id, stop.d_id);
+            }
+            isLoadedSettings = false;
+            LoadSettings();
+            (sender as Button).IsEnabled = true;
+            if (!status.isSuccess && status.reason != null)
+            {
+                new MessageDialog(status.reason).ShowAsync();
+            }
         }
 
         private async Task<Status> updateSchedule()
         {
-            Database.DropDatabase();
             Schedule scedule = new Schedule();
             return await scedule.GetSchedule(LocalProperties.LoadFromToLP(LocalProperties.LP_selected_city));
         }
@@ -185,6 +212,73 @@ namespace New_Goes
             if (!Frame.Navigate(typeof(Loading)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+
+        private void Info_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(Info)))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
+        }
+        
+        private async void Rate_App(object sender, RoutedEventArgs e)
+        {
+            Windows.System.Launcher.LaunchUriAsync(new Uri("ms-windows-store:reviewapp?appid=" + CurrentApp.AppId));
+        }
+
+        private async void Feedback_Click(object sender, RoutedEventArgs e)
+        {
+            EmailRecipient sendTo = new EmailRecipient()
+            {
+                Name = "admin@goes",
+                Address = "erickvoodoo1993@gmail.com"
+            };
+            EmailMessage mail = new EmailMessage();
+            mail.Subject = "Благодарность или предложения";
+            mail.Body = "";
+            mail.To.Add(sendTo);
+            await EmailManager.ShowComposeNewEmailAsync(mail);
+        }
+
+
+        private async void Buy_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                ListingInformation listing = await CurrentApp.LoadListingInformationAsync();
+                var superweapon = listing.ProductListings.FirstOrDefault(p => p.Value.ProductId == Constant.IAP_PREMIUN);
+
+                try
+                {
+                    ListingInformation LicensePremiumID = await Windows.ApplicationModel.Store.CurrentApp.LoadListingInformationByProductIdsAsync(new string[] { Constant.IAP_PREMIUN });
+                    
+                    string x = await CurrentApp.RequestProductPurchaseAsync(LicensePremiumID.ProductListings.ToList()[0].Value.ProductId, false);
+
+                    var productLicenses = CurrentApp.LicenseInformation.ProductLicenses;
+                    ProductLicense tokenLicense = productLicenses[Constant.IAP_PREMIUN];
+
+                    if (tokenLicense.IsActive)
+                    {
+                        LocalProperties.SaveToLP(LocalProperties.LP_active_premium, "true");
+                        LoadSettingsReboot();
+                        new MessageDialog("Платный функционал успешно активирован").ShowAsync();
+                    }
+                    else
+                    {
+                        new MessageDialog("Не удалось активировать!").ShowAsync();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                   new MessageDialog("Неизвестная ошибка").ShowAsync();
+                }
+            }
+            else
+            {
+                new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
             }
         }
 

@@ -35,7 +35,18 @@
         <StackPanel Grid.Row="0" Margin="9.5,0,9.5,9.5">
             <TextBlock x:Uid="applicationName" Style="{ThemeResource TitleTextBlockStyle}" FontSize="32"/>
             <TextBlock Style="{ThemeResource TitleTextBlockStyle}" FontSize="24" x:Uid="HeaderTitleStops"/>
-            <TextBox HorizontalAlignment="Stretch" TextChanged="TextBox_TextChanged" x:Uid="SearchStops"/>
+           
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0" TextChanged="TextBox_TextChanged" x:Uid="SearchStops"/>
+                <Button Margin="9.5,0,9.5,0" MinWidth="80" Grid.Column="1" Click="Button_Click">
+                    <SymbolIcon Symbol="Shuffle" />
+                </Button>
+            </Grid>
         </StackPanel>
 
         <Grid Grid.Row="1" x:Name="PivotMain">
@@ -59,13 +70,13 @@
                                 </Grid>
                             
                                 <Grid Grid.Column="1">
-                                    <StackPanel Margin="9.5,0,0,0" Orientation="Horizontal">
+                                    <StackPanel Margin="9.5,0,20,0" Orientation="Horizontal">
                                             <Image Source="{Binding Path=isBus}" Width="20" Height="20" />
-                                             <Image Source="{Binding Path=isTroll}" Width="20" Height="20"/>
+                                            <Image Source="{Binding Path=isTroll}" Width="20" Height="20"/>
                                             <Image Source="{Binding Path=isTramm}" Width="20" Height="20"/>
                                     </StackPanel>
                                 </Grid>
-                                </Grid>
+                            </Grid>
                             <Rectangle Height="0.5" HorizontalAlignment="Stretch" Fill="LightGray"/>
                         </StackPanel>
                     </DataTemplate>

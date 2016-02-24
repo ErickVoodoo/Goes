@@ -15,6 +15,7 @@ namespace New_Goes.Model
         public string number { get; set; }
         public string d_name { get; set; }
         public string s_name { get; set; }
+        public string next_bus { get; set; }
         public int r_id { get; set; }
         public int d_id { get; set; }
         public int n_id { get; set; }

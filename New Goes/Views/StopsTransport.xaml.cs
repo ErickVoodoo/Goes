@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -82,18 +83,39 @@ namespace New_Goes.Views
         /// session.  The state will be null the first time a page is visited.</param>
         /// 
         StopNameAllSQL param;
-
+        Time time = new Time();
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             if (!isLoaded)
             {
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
-                param = e.NavigationParameter as StopNameAllSQL;
+                param = JsonConvert.DeserializeObject<StopNameAllSQL>(e.NavigationParameter.ToString());
                 this.DefaultViewModel["Title"] = param.name; 
                 this.DefaultViewModel["Favorite"] = Database.IfAllStopsAreFavorite(Int32.Parse(param.id)) ? Constant.FavoriteStar : Constant.UnFavoriteStar;
                 await Task.Run(() => LoadRoutes(param));
                 isLoaded = true;
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    async () =>
+                    {
+                        while (true)
+                        {
+                            await Task.Delay(10000);
+                            foreach (var item in Buses)
+                            {
+                                Buses.Where(d => d.d_id == item.d_id).First().Next_Bus = time.getNextBusTime(item.schedule, item.days);
+                            }
+                            foreach (var item in Trolls)
+                            {
+                                Trolls.Where(d => d.d_id == item.d_id).First().Next_Bus = time.getNextBusTime(item.schedule, item.days);
+                            }
+                            foreach (var item in Tramms)
+                            {
+                                Tramms.Where(d => d.d_id == item.d_id).First().Next_Bus = time.getNextBusTime(item.schedule, item.days);
+                            }
+                        }
+                    }
+                );
             }
         }
 
@@ -247,9 +269,10 @@ namespace New_Goes.Views
                 s_name = param.name,
                 d_id = paramItem.d_id,
                 r_id = paramItem.r_id,
-                n_id = paramItem.n_id
+                n_id = paramItem.n_id,
+                next_bus = paramItem.next_bus,
             };
-            if (!Frame.Navigate(typeof(Views.MainSchedule), mainSchedule))
+            if (!Frame.Navigate(typeof(Views.MainSchedule), JsonConvert.SerializeObject(mainSchedule)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

@@ -61,11 +61,22 @@
                             <Rectangle Fill="Gray" Height="1" HorizontalAlignment="Stretch"/>
                             <TextBlock Text="{Binding Path=place_schedule}" Style="{StaticResource MessageDialogContentStyle}" TextWrapping="Wrap"/>
 
-
+                            <TextBlock Margin="0,9.5,0,0" Text="Телефонные номера" Style="{StaticResource TitleTextBlockStyle}"  TextWrapping="Wrap"/>
+                            <Rectangle Fill="Gray" Height="1" HorizontalAlignment="Stretch"/>
                             <ListView Grid.Row="1" SelectionMode="None" IsItemClickEnabled="True" ItemsSource="{Binding Path=phone_schedule}" HorizontalAlignment="Stretch">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Button HorizontalAlignment="Stretch" Content="{Binding Path=phone}" Tag="{Binding Path=name}" Click="Button_Click"/>
+                                        <Button HorizontalAlignment="Stretch" Tag="{Binding Path=name}" Click="Button_Click">
+                                            <Grid Width="150">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <SymbolIcon Grid.Column="0" Symbol="Phone"/>
+                                                <TextBlock TextAlignment="Center" Grid.Column="1" Text="{Binding Path=phone}"/>
+                                            </Grid>
+                                        </Button>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>

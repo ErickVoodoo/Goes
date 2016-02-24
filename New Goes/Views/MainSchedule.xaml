@@ -80,6 +80,10 @@
                                     </Button>
                                 </Border>
                             </Grid>
+                            <StackPanel Orientation="Horizontal" Margin="13.75,4.5,4.5,4.5">
+                                <Image Width="30" Height="30" Source="/Assets/MenuItemsLogo/clock.png"/>
+                                <TextBlock Margin="18.25,0,0,0" Text="{Binding NextBus}" Style="{ThemeResource TitleTextBlockStyle}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                 </Grid>
@@ -95,7 +99,7 @@
                 </DataTemplate>
             </Pivot.HeaderTemplate>
             <PivotItem x:Uid="MainSchedule_PivotMonday" x:Name="PItemMonday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Monday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Monday}" Tapped="List_Tapped" Tag="0">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -108,7 +112,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
@@ -123,7 +127,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem x:Uid="MainSchedule_PivotTuesday" x:Name="PItemTuesday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Tuesday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Tuesday}" Tapped="List_Tapped" Tag="1">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -136,7 +140,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
@@ -151,7 +155,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem x:Uid="MainSchedule_PivotWednesday" x:Name="PItemWednesday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Wednesday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Wednesday}" Tapped="List_Tapped" Tag="2">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -164,7 +168,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
@@ -179,7 +183,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem x:Uid="MainSchedule_PivotThursday" x:Name="PItemThursday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Thursday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Thursday}" Tapped="List_Tapped" Tag="3">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -192,7 +196,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
@@ -207,7 +211,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem x:Uid="MainSchedule_PivotFriday" x:Name="PItemFriday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Friday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Friday}" Tapped="List_Tapped" Tag="4">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -220,7 +224,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
@@ -235,7 +239,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem x:Uid="MainSchedule_PivotSaturday" x:Name="PItemSaturday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Saturday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Saturday}" Tapped="List_Tapped" Tag="5">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -248,7 +252,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=cur_time}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">
@@ -263,7 +267,7 @@
                 </ListView>
             </PivotItem>
             <PivotItem x:Uid="MainSchedule_PivotSunday" x:Name="PItemSunday">
-                <ListView SelectionMode="None" ItemsSource="{Binding Sunday}">
+                <ListView SelectionMode="None" ItemsSource="{Binding Sunday}" Tapped="List_Tapped" Tag="6">
                     <ListView.ItemContainerTransitions>
                         <TransitionCollection>
                             <EdgeUIThemeTransition Edge="Right"/>
@@ -276,7 +280,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="50" Width="{Binding Path=width}">
+                            <Grid Height="50" Width="{Binding Path=width}" Background="{Binding Path=color}">
                                 <StackPanel Orientation="Vertical">
                                     <Rectangle HorizontalAlignment="Stretch" Height="0.5" Fill="LightGray"/>
                                     <StackPanel VerticalAlignment="Stretch" Orientation="Horizontal">

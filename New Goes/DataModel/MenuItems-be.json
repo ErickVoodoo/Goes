@@ -1,0 +1,11 @@
+﻿{
+    "MenuItems": [
+        { "name": "транспарт", "description": "транспарт па нумарах", "img_white": "/Assets/MenuItemsLogo/bus_white.png",
+        "img_black": "/Assets/MenuItemsLogo/bus_black.png",
+        "position" : "0" },
+        { "name": "прыпынкі",  "description": "прыпынкі па назвах",   "img_white": "/Assets/MenuItemsLogo/stops_white.png", "img_black": "/Assets/MenuItemsLogo/stops_black.png", "position": "1" },
+        { "name": "абранае", "description": "вашы выбраныя прыпынкі", "img_white": "/Assets/MenuItemsLogo/fav_white.png", "img_black": "/Assets/MenuItemsLogo/fav_black.png", "position": "2" },
+        { "name": "маршрутныя таксі", "description": "маршрутныя таксі гарадоў", "img_white": "/Assets/MenuItemsLogo/fbus_white.png", "img_black": "/Assets/MenuItemsLogo/fbus_black.png", "position": "3" },
+        { "name": "таксі", "description": "нумары таксі вашага горада", "img_white": "/Assets/MenuItemsLogo/taxi_white.png", "img_black": "/Assets/MenuItemsLogo/taxi_black.png", "position": "4" }
+    ]
+}

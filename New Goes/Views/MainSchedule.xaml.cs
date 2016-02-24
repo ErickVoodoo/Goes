@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -79,34 +80,47 @@ namespace New_Goes.Views
         ScheduleSQL param;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            Time time = new Time();
             Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
-            param = e.NavigationParameter as ScheduleSQL;
+            param = JsonConvert.DeserializeObject<ScheduleSQL>(e.NavigationParameter.ToString());
             this.DefaultViewModel["Direction"] = param.d_name;
             this.DefaultViewModel["Number"] = param.number;
             this.DefaultViewModel["Stop"] = param.s_name;
+            this.DefaultViewModel["NextBus"] = param.next_bus;
             this.DefaultViewModel["BorderColor"] = Constant.TransportColors[param.type];
             this.DefaultViewModel["Favorite"] = param.favorite ? Constant.FavoriteStar : Constant.UnFavoriteStar;
             await Task.Run(() => LoadRoutes(param));
             Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
+
+            await Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(10000);
+                    this.DefaultViewModel["NextBus"] = time.getNextBusTime(param.schedule, param.days);
+                }
+            });
         }
+        int selectedPivot;
 
         private async Task LoadRoutes(ScheduleSQL param)
         {
             Time time = new Time();
             List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.width, param.days, param.schedule);
-
-            this.DefaultViewModel["Monday"] = list[0];
-            this.DefaultViewModel["Tuesday"] = list[1];
-            this.DefaultViewModel["Wednesday"] = list[2];
-            this.DefaultViewModel["Thursday"] = list[3];
-            this.DefaultViewModel["Friday"] = list[4];
-            this.DefaultViewModel["Saturday"] = list[5];
-            this.DefaultViewModel["Sunday"] = list[6];
-
-            int selectedPivot = Time.getCurrentDaySchedule(param.schedule, param.days);
+            Debug.WriteLine("Count");
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {
+                this.DefaultViewModel["Monday"] = list[0];
+                this.DefaultViewModel["Tuesday"] = list[1];
+                this.DefaultViewModel["Wednesday"] = list[2];
+                this.DefaultViewModel["Thursday"] = list[3];
+                this.DefaultViewModel["Friday"] = list[4];
+                this.DefaultViewModel["Saturday"] = list[5];
+                this.DefaultViewModel["Sunday"] = list[6];
+
+                selectedPivot = Time.getCurrentDaySchedule(param.schedule, param.days);
+
                 if (list[0].Count == 0)
                     PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemMonday));
                 if (list[1].Count == 0)
@@ -121,8 +135,8 @@ namespace New_Goes.Views
                     PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSaturday));
                 if (list[6].Count == 0)
                     PivotMain.Items.RemoveAt(PivotMain.Items.IndexOf(PItemSunday));
-                PivotMain.SelectedIndex = list[selectedPivot].Count != 0 ? selectedPivot : 0;
-            }
+                PivotMain.SelectedIndex = selectedPivot;
+                }
             );
         }
 
@@ -171,6 +185,13 @@ namespace New_Goes.Views
         {
             Database.AddOrRemoveFromFavorite(param.n_id, param.r_id, param.d_id);
             this.DefaultViewModel["Favorite"] = this.DefaultViewModel["Favorite"] == Constant.FavoriteStar ? Constant.UnFavoriteStar : Constant.FavoriteStar;
+        }
+
+        private void List_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            var tt = (((PivotMain.SelectedItem as PivotItem).Content as ListView).ItemsSource as List<New_Goes.CommonAPI.Time.TimeView>).Where(item => item.hour == DateTime.Now.Hour);
+            if (selectedPivot == Int16.Parse((sender as ListView).Tag.ToString()) && tt.Count() != 0)
+                ((PivotMain.SelectedItem as PivotItem).Content as ListView).ScrollIntoView((((PivotMain.SelectedItem as PivotItem).Content as ListView).ItemsSource as List<New_Goes.CommonAPI.Time.TimeView>).Where(item => item.hour == DateTime.Now.Hour).First(), ScrollIntoViewAlignment.Leading);
         }
     }
 }

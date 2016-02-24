@@ -23,6 +23,7 @@ namespace New_Goes.Model
         public int n_id { get; set; }
         public int d_id { get; set; }
         public int type { get; set; }
+        public string stop_count { get; set; }
         public string next_bus { get; set; }
         public double width { get; set; }
         public string number { get; set; }
@@ -55,5 +56,18 @@ namespace New_Goes.Model
             }
         }
 
+        public string Next_Bus
+        {
+            get { return this.next_bus;}
+
+            set 
+            {
+                if (value != this.next_bus)
+                {
+                    this.next_bus = value;
+                    NotifyPropertyChanged("next_bus");
+                }
+            }
+        }
     }
 }

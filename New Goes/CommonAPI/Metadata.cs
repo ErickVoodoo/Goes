@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
+using Windows.UI.Popups;
 
 namespace New_Goes.CommonAPI
 {
@@ -22,6 +24,12 @@ namespace New_Goes.CommonAPI
 
             try
             {
+                if (!Constant.checkNetworkConnection())
+                {
+                    //ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                    //new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                    return new StatusMetaData(false, null, null);
+                }
                 var HttpClientConnection = new HttpClient(new HttpClientHandler());
                 HttpResponseMessage ResponseConnection = await HttpClientConnection.PostAsync("https://" + LocalProperties.LoadFromToLP(LocalProperties.LP_selected_city) + ".btrans.by/dev/api/v3/metadata", new FormUrlEncodedContent(values));
                 ResponseConnection.EnsureSuccessStatusCode();

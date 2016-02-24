@@ -20,6 +20,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -89,7 +90,7 @@ namespace New_Goes.Views.Fast_Buses.Cities
         {
             if (!isLoaded)
             {
-                param = e.NavigationParameter as StaticFBusesData;
+                param = JsonConvert.DeserializeObject<StaticFBusesData>(e.NavigationParameter.ToString());
                 this.DefaultViewModel["Title"] = this.resourceLoader.GetString("TitleFBus") + "(" + param.title + ")  ";
                 this.DefaultViewModel["City"] = param.title;
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
@@ -104,58 +105,75 @@ namespace New_Goes.Views.Fast_Buses.Cities
         private async Task LoadRoutes()
         {
             fbuslist = new List<FBusList>();
-
             string FBus = Database.GetFBusJSON(param.key);
-            string result = "";
-            if (FBus == null)
-            {
-                var data = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("secret", Constant.PREMIUM_API_KEY),
-                    new KeyValuePair<string, string>("city", param.key),
-                };
-                string res = Constant.GetJsonFromURI(param.value, data).Result;
-                JObject obj = JObject.Parse(res);
-                result = obj["message"].ToString();
-            }
-            else
-            {
-                result = FBus;
-            }
-
-
-            FBus BUS = JsonConvert.DeserializeObject<FBus>(result);
+            string result = FBus;
 
             if (FBus == null)
             {
-                Database.AddFbus(param.key, result);
-            }
-
-            foreach (ScheduleObj schedule in BUS.schedule)
-            {
-                fbuslist.Add(new FBusList()
+                try
                 {
-                    direction = BUS.title.direction,
-                    interval = BUS.title.interval,
-                    number = BUS.title.number,
-                    alternative = BUS.title.alternative,
-                    time_available = BUS.title.time_available,
-                    name = BUS.title.name,
-
-                    direction_schedule = schedule.direction,
-                    interval_schedule = schedule.interval,
-                    number_schedule = schedule.number,
-                    alternative_schedule = schedule.alternative,
-                    time_available_schedule = schedule.time_available,
-                    name_schedule = schedule.name,
-                    width = currentWidth,
-
-                    isNameVisible = schedule.name == null || schedule.name == " " ? "Collapsed" : "Visible",
-                    isAltVisible = schedule.alternative == null || schedule.alternative == " " ? "Collapsed" : "Visible",
-                    isTimeAvVisible = schedule.time_available == null || schedule.time_available == " " ? "Collapsed" : "Visible"
-                });
+                    if (!Constant.checkNetworkConnection())
+                    {
+                        ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                        Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                        () =>
+                        {
+                            new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                        }
+                        );
+                    }
+                    else
+                    {
+                        var data = new List<KeyValuePair<string, string>>
+                        {
+                            new KeyValuePair<string, string>("secret", Constant.PREMIUM_API_KEY),
+                            new KeyValuePair<string, string>("city", param.key),
+                        };
+                        string res = Constant.GetJsonFromURI(param.value, data).Result;
+                        JObject obj = JObject.Parse(res);
+                        result = obj["message"].ToString();
+                    }
+                }
+                catch (Exception)
+                {
+                    ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                    new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                }
             }
+            if (result != null)
+            {
+                FBus BUS = JsonConvert.DeserializeObject<FBus>(result);
 
+                if (FBus == null)
+                {
+                    Database.AddFbus(param.key, result);
+                }
+
+                foreach (ScheduleObj schedule in BUS.schedule)
+                {
+                    fbuslist.Add(new FBusList()
+                    {
+                        direction = BUS.title.direction,
+                        interval = BUS.title.interval,
+                        number = BUS.title.number,
+                        alternative = BUS.title.alternative,
+                        time_available = BUS.title.time_available,
+                        name = BUS.title.name,
+
+                        direction_schedule = schedule.direction,
+                        interval_schedule = schedule.interval,
+                        number_schedule = schedule.number,
+                        alternative_schedule = schedule.alternative,
+                        time_available_schedule = schedule.time_available,
+                        name_schedule = schedule.name,
+                        width = currentWidth,
+
+                        isNameVisible = schedule.name == null || schedule.name == " " ? "Collapsed" : "Visible",
+                        isAltVisible = schedule.alternative == null || schedule.alternative == " " ? "Collapsed" : "Visible",
+                        isTimeAvVisible = schedule.time_available == null || schedule.time_available == " " ? "Collapsed" : "Visible"
+                    });
+                }
+            }
             this.DefaultViewModel["FBuses"] = fbuslist;
         }
 

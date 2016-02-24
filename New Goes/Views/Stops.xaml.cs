@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -105,9 +106,9 @@ namespace New_Goes.Views
                 Transport.Add(new StopNameAllSQL()
                 {
                     id = item.id,
-                    isBus = buses.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_bus_white.png" : "/Assets/MenuItemsLogo/ic_bus_black.png") : null,
+                    isBus = buses.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light    ? "/Assets/MenuItemsLogo/ic_bus_white.png"   : "/Assets/MenuItemsLogo/ic_bus_black.png") : null,
                     isTroll = trolls.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_troll_white.png" : "/Assets/MenuItemsLogo/ic_troll_black.png") : null,
-                    isTramm = tramms.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_tramm_white.png" : "/Assets/MenuItemsLogo/ic_tramm_black.png") : null,
+                    isTramm = tramms.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_tram_white.png"  : "/Assets/MenuItemsLogo/ic_tram_black.png") : null,
                     name = item.name,
                     width = screenWidth
                 });
@@ -185,7 +186,7 @@ namespace New_Goes.Views
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!Frame.Navigate(typeof(Views.StopsTransport), e.ClickedItem as StopNameAllSQL))
+            if (!Frame.Navigate(typeof(Views.StopsTransport), JsonConvert.SerializeObject(e.ClickedItem as StopNameAllSQL)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
@@ -194,6 +195,14 @@ namespace New_Goes.Views
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.DefaultViewModel["Transport"] = Transport.Where(text => text.name.ToUpper().Contains((sender as TextBox).Text.ToUpper()));
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!Frame.Navigate(typeof(Views.Route)))
+            {
+                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+            }
         }
     }
 }

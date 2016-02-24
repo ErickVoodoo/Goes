@@ -222,4 +222,70 @@
   <data name="ScheduleFinished" xml:space="preserve">
     <value>finished</value>
   </data>
+  <data name="MainMenuSettings_ButtonBuyPremium.Content" xml:space="preserve">
+    <value>about premium version</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Error_InternetConnection" xml:space="preserve">
+    <value>Internet error. Check your internet connection and try again.</value>
+  </data>
+  <data name="MainMenuSettings_ToggleTheme.Header" xml:space="preserve">
+    <value>application main theme</value>
+  </data>
+  <data name="MainMenuSettings_ToggleTheme.OffContent" xml:space="preserve">
+    <value>dark</value>
+  </data>
+  <data name="MainMenuSettings_ToggleTheme.OnContent" xml:space="preserve">
+    <value>light</value>
+  </data>
+  <data name="MessageDialogPremiumContent" xml:space="preserve">
+    <value>To use this function, you need to activate the Premium version of this app</value>
+  </data>
+  <data name="MessageDialogPremiumTitle" xml:space="preserve">
+    <value>Not activated</value>
+  </data>
+  <data name="FromAutoText.PlaceholderText" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="RouteButton_Scan.Content" xml:space="preserve">
+    <value>search</value>
+  </data>
+  <data name="String_StopCount" xml:space="preserve">
+    <value>stops</value>
+  </data>
+  <data name="ToAutoText.PlaceholderText" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="String_H" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="String_M" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="GroupLink.Text" xml:space="preserve">
+    <value>group in vk</value>
+  </data>
+  <data name="MainMenuSettings_ButtonBuy.Content" xml:space="preserve">
+    <value>buy</value>
+  </data>
+  <data name="MainMenuSettings_ButtonInfo.Content" xml:space="preserve">
+    <value>info</value>
+  </data>
+  <data name="MainMenuSettings_TextBlockPremiumBody.Text" xml:space="preserve">
+    <value>in this menu you can view information about the premium version or buy it</value>
+  </data>
+  <data name="MainMenuSettings_TextBlockPremiumTitle.Text" xml:space="preserve">
+    <value>about premium version</value>
+  </data>
+  <data name="StaticButtonBuy" xml:space="preserve">
+    <value>buy premium</value>
+  </data>
+  <data name="StaticButtonCancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="MainMenuSettings_ButtonFeedback.Content" xml:space="preserve">
+    <value>feedback</value>
+  </data>
 </root>

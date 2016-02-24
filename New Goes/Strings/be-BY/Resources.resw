@@ -120,172 +120,172 @@
   <data name="applicationName.Text" xml:space="preserve">
     <value>Goes</value>
   </data>
+  <data name="type" xml:space="preserve">
+    <value>be</value>
+  </data>
   <data name="Directions_PivotItem_Bus.Header" xml:space="preserve">
-    <value>автобусы</value>
+    <value>аўтобусы</value>
   </data>
   <data name="Directions_PivotItem_Tramm.Header" xml:space="preserve">
-    <value>трамваи</value>
+    <value>трамваі</value>
   </data>
   <data name="Directions_PivotItem_Troll.Header" xml:space="preserve">
-    <value>троллейбусы</value>
+    <value>тралейбусы</value>
   </data>
   <data name="GlobalLoading" xml:space="preserve">
     <value>загрузка...</value>
   </data>
   <data name="GlobalLoadingSuccess" xml:space="preserve">
-    <value>успешно</value>
+    <value>паспяхова</value>
   </data>
   <data name="HeaderTitleFavorites.Text" xml:space="preserve">
-    <value>избранные</value>
+    <value>абраныя</value>
   </data>
   <data name="HeaderTitleFBus.Text" xml:space="preserve">
-    <value>маршрутные такси</value>
+    <value>маршрутныя таксі</value>
   </data>
   <data name="HeaderTitleStops.Text" xml:space="preserve">
-    <value>остановки</value>
+    <value>прыпынкі</value>
   </data>
   <data name="HeaderTitleTaxi.Text" xml:space="preserve">
-    <value>такси</value>
+    <value>таксі</value>
   </data>
   <data name="HeaderTitleTransport.Text" xml:space="preserve">
-    <value>транспорт</value>
+    <value>транспарт</value>
   </data>
   <data name="MainMenuSettings_ButtonChangeCity.Content" xml:space="preserve">
-    <value>изменить город</value>
+    <value>змяніць горад</value>
   </data>
   <data name="MainMenuSettings_ButtonRate.Content" xml:space="preserve">
-    <value>оценить</value>
+    <value>ацаніць</value>
   </data>
   <data name="MainMenuSettings_ButtonUpdateDatabase.Content" xml:space="preserve">
-    <value>обновить расписание</value>
+    <value>абнавіць расклад</value>
   </data>
   <data name="MainMenuSettings_TextCurrentDatabase.Text" xml:space="preserve">
-    <value>текущая версия расписания</value>
+    <value>бягучая версія раскладу</value>
   </data>
   <data name="MainMenuSettings_TextServerDatabase.Text" xml:space="preserve">
-    <value>новая версия расписания</value>
+    <value>новая версія раскладу</value>
   </data>
   <data name="MainMenu_PivotItemMenu.Header" xml:space="preserve">
     <value>меню</value>
   </data>
   <data name="MainMenu_PivotItemSettings.Header" xml:space="preserve">
-    <value>настройки</value>
+    <value>налады</value>
   </data>
   <data name="MainSchedule_PivotFriday.Header" xml:space="preserve">
-    <value>пятница</value>
+    <value>пятніца</value>
   </data>
   <data name="MainSchedule_PivotMonday.Header" xml:space="preserve">
-    <value>понедельник</value>
+    <value>панядзелак</value>
   </data>
   <data name="MainSchedule_PivotSaturday.Header" xml:space="preserve">
-    <value>суббота</value>
+    <value>субота</value>
   </data>
   <data name="MainSchedule_PivotSunday.Header" xml:space="preserve">
-    <value>воскресенье</value>
+    <value>нядзеля</value>
   </data>
   <data name="MainSchedule_PivotThursday.Header" xml:space="preserve">
-    <value>четверг</value>
+    <value>чацвер</value>
   </data>
   <data name="MainSchedule_PivotTuesday.Header" xml:space="preserve">
-    <value>вторник</value>
+    <value>аўторак</value>
   </data>
   <data name="MainSchedule_PivotWednesday.Header" xml:space="preserve">
-    <value>среда</value>
+    <value>серада</value>
   </data>
   <data name="NavigationFailedExceptionMessage" xml:space="preserve">
-    <value>Navigation failed.</value>
+    <value>Памылка навігацыі.</value>
   </data>
   <data name="Reload_Application" xml:space="preserve">
-    <value>перезагрузите приложение для применения настроек</value>
+    <value>перазагрузіце прыкладанне для прымянення налад</value>
   </data>
   <data name="SearchFBus.PlaceholderText" xml:space="preserve">
-    <value>поиск по имени, направлению,номеру</value>
+    <value>пошук па імю, напрамку, нумару</value>
   </data>
   <data name="SearchStops.PlaceholderText" xml:space="preserve">
-    <value>поиск по имени</value>
+    <value>пошук па імю</value>
   </data>
   <data name="SearchTaxi.PlaceholderText" xml:space="preserve">
-    <value>поиск по имени,описанию</value>
+    <value>пошук па імю, апісанню</value>
   </data>
   <data name="TitleFBus" xml:space="preserve">
-    <value>маршрутные такси</value>
+    <value>маршрутныя таксі</value>
   </data>
   <data name="TitleTaxi" xml:space="preserve">
-    <value>такси</value>
-  </data>
-  <data name="type" xml:space="preserve">
-    <value>ru</value>
+    <value>таксі</value>
   </data>
   <data name="Loading_ButtonLoad.Content" xml:space="preserve">
-    <value>выбрать</value>
+    <value>выбраць</value>
   </data>
   <data name="ScheduleFinished" xml:space="preserve">
-    <value>окончен</value>
+    <value>скончаны</value>
   </data>
   <data name="MainMenuSettings_ButtonBuyPremium.Content" xml:space="preserve">
-    <value>о премиум версии</value>
+    <value>аб прэміум версіі</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Ошибка</value>
+    <value>Памылка</value>
   </data>
   <data name="Error_InternetConnection" xml:space="preserve">
-    <value>Ошибка интернет соединения. Проверьте интернет соединение и повторите снова.</value>
+    <value>Памылка інтэрнэту. Праверце ваша інтэрнэт злучэнне і паўторыце спробу.</value>
   </data>
   <data name="MainMenuSettings_ToggleTheme.Header" xml:space="preserve">
-    <value>цветовая тема приложения</value>
+    <value>галоўная тэма прыкладання</value>
   </data>
   <data name="MainMenuSettings_ToggleTheme.OffContent" xml:space="preserve">
-    <value>темная</value>
+    <value>цёмная</value>
   </data>
   <data name="MainMenuSettings_ToggleTheme.OnContent" xml:space="preserve">
     <value>светлая</value>
   </data>
   <data name="MessageDialogPremiumContent" xml:space="preserve">
-    <value>Для использования данного функционала вам необходимо активировать премиум версию данного приложения</value>
+    <value>Для выкарыстання гэтага функцыяналу вам неабходна набыць прэміум версію</value>
   </data>
   <data name="MessageDialogPremiumTitle" xml:space="preserve">
-    <value>Не активировано</value>
+    <value>Не актывізаванае</value>
   </data>
   <data name="FromAutoText.PlaceholderText" xml:space="preserve">
-    <value>с</value>
+    <value>адкуль</value>
   </data>
   <data name="RouteButton_Scan.Content" xml:space="preserve">
-    <value>поиск</value>
+    <value>шукаць</value>
   </data>
   <data name="String_StopCount" xml:space="preserve">
-    <value>остановок </value>
+    <value>прыпынкі</value>
   </data>
   <data name="ToAutoText.PlaceholderText" xml:space="preserve">
-    <value>на</value>
+    <value>куды</value>
   </data>
   <data name="String_H" xml:space="preserve">
-    <value>ч</value>
+    <value>г</value>
   </data>
   <data name="String_M" xml:space="preserve">
-    <value>м</value>
+    <value>х</value>
   </data>
   <data name="GroupLink.Text" xml:space="preserve">
-    <value>группа в вк</value>
+    <value>група ў вк</value>
   </data>
   <data name="MainMenuSettings_ButtonBuy.Content" xml:space="preserve">
-    <value>приобрести</value>
+    <value>набыць</value>
   </data>
   <data name="MainMenuSettings_ButtonInfo.Content" xml:space="preserve">
-    <value>информация</value>
+    <value>інфармацыя</value>
   </data>
   <data name="MainMenuSettings_TextBlockPremiumBody.Text" xml:space="preserve">
-    <value>в данном меню вы можете просмотреть информацию о премиум версии или приобрести ее</value>
+    <value>у дадзеным меню вы можаце паглядзець інфармацыю аб прэміум версіі ці набыць яе</value>
   </data>
   <data name="MainMenuSettings_TextBlockPremiumTitle.Text" xml:space="preserve">
-    <value>о премиум версии</value>
+    <value>аб прэміум версіі</value>
   </data>
   <data name="StaticButtonBuy" xml:space="preserve">
-    <value>купить премиум</value>
+    <value>набыць прэміум</value>
   </data>
   <data name="StaticButtonCancel" xml:space="preserve">
-    <value>закрыть</value>
+    <value>закрыць</value>
   </data>
   <data name="MainMenuSettings_ButtonFeedback.Content" xml:space="preserve">
-    <value>отзыв</value>
+    <value>водгук</value>
   </data>
 </root>

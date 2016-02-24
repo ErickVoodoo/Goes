@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -88,13 +90,27 @@ namespace New_Goes.Views
             if (!isLoaded)
             {
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
-                param = e.NavigationParameter as DirectionSQL;
+                param = JsonConvert.DeserializeObject<DirectionSQL>(e.NavigationParameter.ToString());
                 this.DefaultViewModel["Number"] = param.number;
                 this.DefaultViewModel["Direction"] = param.name;
                 this.DefaultViewModel["BorderColor"] = Constant.TransportColors[param.type];
                 await Task.Run(() => LoadRoutes(param));
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoadingSuccess"), false);
                 isLoaded = true;
+
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                    async () =>
+                    {
+                        while (true)
+                        {
+                            await Task.Delay(10000);
+                            foreach (var item in Stops)
+                            {
+                                Stops.Where(d => d.n_id == item.n_id).First().Next_Bus = time.getNextBusTime(item.schedule, item.days);
+                            }
+                        }
+                    }
+                );
             }
         }
 
@@ -105,10 +121,10 @@ namespace New_Goes.Views
             SQLiteConnection connection = new SQLiteConnection(dbPath);
             Stops = new ObservableCollection<DirectionStopSQL>();
             var items = connection.Query<DirectionStopSQL>(
-                "SELECT s.id as s_id, s.r_id as r_id, s.n_id as n_id, s.d_id as d_id,s.favorite as favorite, sn.name as name, s.schedule as schedule, s.days as days " +
+                "SELECT s.id as s_id, s.r_id as r_id, s.n_id as n_id, s.d_id as d_id,s.favorite as favorite, REPLACE(sn.name,'ул. ','') as name, s.schedule as schedule, s.days as days " +
                 "FROM stop AS s " +
                 "LEFT JOIN stopname as sn ON n_id = sn.id " + 
-                "WHERE d_id=" + param.d_id + " " + 
+                "WHERE d_id=" + param.d_id + " AND r_id=" + param.r_id + " " +
                 "GROUP BY name " +
                 "ORDER BY s_id");
 
@@ -190,9 +206,10 @@ namespace New_Goes.Views
                 s_name = paramItem.name,
                 d_id = paramItem.d_id,
                 r_id = paramItem.r_id,
+                next_bus = paramItem.next_bus,
                 n_id = paramItem.n_id
             };
-            if (!Frame.Navigate(typeof(Views.MainSchedule), mainSchedule))
+            if (!Frame.Navigate(typeof(Views.MainSchedule), JsonConvert.SerializeObject(mainSchedule)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

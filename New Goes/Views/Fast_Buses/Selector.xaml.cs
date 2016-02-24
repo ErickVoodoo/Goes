@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.ApplicationModel.Resources;
+using Windows.ApplicationModel.Store;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -144,9 +147,65 @@ namespace New_Goes.Views.Fast_Buses
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!Frame.Navigate(typeof(Views.Fast_Buses.Cities.First), e.ClickedItem as StaticFBusesData))
+            if (LocalProperties.LoadFromToLP(LocalProperties.LP_active_premium) != "true")
             {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                MessageDialog msg = new MessageDialog(this.resourceLoader.GetString("MessageDialogPremiumContent"), this.resourceLoader.GetString("MessageDialogPremiumTitle"));
+                msg.Commands.Add(new UICommand(this.resourceLoader.GetString("StaticButtonCancel"), new UICommandInvokedHandler(CommandHandlers)));
+                msg.Commands.Add(new UICommand(this.resourceLoader.GetString("StaticButtonBuy"), new UICommandInvokedHandler(CommandHandlers)));
+                msg.ShowAsync();
+            }
+            else
+            {
+                if (!Frame.Navigate(typeof(Views.Fast_Buses.Cities.First), JsonConvert.SerializeObject(e.ClickedItem as StaticFBusesData)))
+                {
+                    throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
+                }
+            }
+        }
+
+        public async void CommandHandlers(IUICommand commandLabel)
+        {
+            var Actions = commandLabel.Label;
+            if (this.resourceLoader.GetString("StaticButtonBuy") == Actions)
+            {
+                if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+                {
+                    ListingInformation listing = await CurrentApp.LoadListingInformationAsync();
+                    var superweapon = listing.ProductListings.FirstOrDefault(p => p.Value.ProductId == Constant.IAP_PREMIUN);
+
+                    try
+                    {
+                        ListingInformation LicensePremiumID = await Windows.ApplicationModel.Store.CurrentApp.LoadListingInformationByProductIdsAsync(new string[] { Constant.IAP_PREMIUN });
+
+                        string x = await CurrentApp.RequestProductPurchaseAsync(LicensePremiumID.ProductListings.ToList()[0].Value.ProductId, false);
+
+                        var productLicenses = CurrentApp.LicenseInformation.ProductLicenses;
+                        ProductLicense tokenLicense = productLicenses[Constant.IAP_PREMIUN];
+
+                        if (tokenLicense.IsActive)
+                        {
+                            LocalProperties.SaveToLP(LocalProperties.LP_active_premium, "true");
+                            new MessageDialog("Платный функционал успешно активирован").ShowAsync();
+                        }
+                        else
+                        {
+                            new MessageDialog("Не удалось активировать!").ShowAsync();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        new MessageDialog("Неизвестная ошибка").ShowAsync();
+                    }
+                }
+                else
+                {
+                    new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                }
+            }
+            else
+            {
+                this.resourceLoader.GetString("StaticButtonCancel");
             }
         }
     }

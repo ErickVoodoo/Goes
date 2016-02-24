@@ -128,7 +128,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#FFBC00" BorderThickness="2">
+                                    <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#6666FF" BorderThickness="2">
                                         <TextBlock Text="{Binding Path=number}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Normal" Margin="-2,-2,0,0"/>
                                     </Border>
 
@@ -170,7 +170,7 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#FFBC00" BorderThickness="2">
+                                    <Border Margin="9.5,0,0,0" Grid.Column="0" HorizontalAlignment="Left" Width="60" Height="60" CornerRadius="30" BorderBrush="#EB0000" BorderThickness="2">
                                         <TextBlock Text="{Binding Path=number}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Normal" Margin="-2,-2,0,0"/>
                                     </Border>
 

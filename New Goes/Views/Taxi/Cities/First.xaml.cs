@@ -88,7 +88,7 @@ namespace New_Goes.Views.Taxi.Cities
         {
             if (!isLoaded)
             {
-                param = e.NavigationParameter as StaticFBusesData;
+                param = JsonConvert.DeserializeObject<StaticFBusesData>(e.NavigationParameter.ToString());
                 this.DefaultViewModel["Title"] = this.resourceLoader.GetString("TitleTaxi") + "(" + param.title + ")  ";
                 this.DefaultViewModel["City"] = param.title;
                 Constant.Loader(this.resourceLoader.GetString("GlobalLoading"), true);
@@ -103,56 +103,75 @@ namespace New_Goes.Views.Taxi.Cities
         private async Task LoadRoutes()
         {
             taxi_list = new List<TaxiList>();
-
             string Taxi = Database.GetTaxiJSON(param.key);
-            string result = "";
+            string result = Taxi;
             if (Taxi == null)
             {
-                var data = new List<KeyValuePair<string, string>>
+                try
                 {
-                    new KeyValuePair<string, string>("secret", Constant.PREMIUM_API_KEY),
-                    new KeyValuePair<string, string>("city", param.key),
-                };
-                string res = Constant.GetJsonFromURI(param.value, data).Result;
-                JObject obj = JObject.Parse(res);
-                result = obj["message"].ToString();
-            }
-            else
-            {
-                result = Taxi;
-            }
-
-            TaxiObj TaxiObject = JsonConvert.DeserializeObject<TaxiObj>(result);
-
-            if (Taxi == null)
-            {
-                Database.AddTaxi(param.key, result);
-            }
-
-            foreach (TaxiItem schedule in TaxiObject.taxi)
-            {
-                List<PhoneObj> phone = new List<PhoneObj>();
-                foreach(object ph in schedule.phone) {
-                    phone.Add(new PhoneObj()
+                    if (!Constant.checkNetworkConnection())
                     {
-                        phone = ph.ToString(),
-                        name = schedule.name,
+                        ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                        Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                        () =>
+                        {
+                            new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                        }
+                        );
+                    }
+                    else
+                    {
+                        var data = new List<KeyValuePair<string, string>>
+                        {
+                        new KeyValuePair<string, string>("secret", Constant.PREMIUM_API_KEY),
+                        new KeyValuePair<string, string>("city", param.key),
+                        };
+                        string res = Constant.GetJsonFromURI(param.value, data).Result;
+                        JObject obj = JObject.Parse(res);
+                        result = obj["message"].ToString();
+                    }
+                }
+                catch (Exception)
+                {
+                    ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView("Resources");
+                    new MessageDialog(resourceLoader.GetString("Error_InternetConnection"), resourceLoader.GetString("Error")).ShowAsync();
+                }
+            }
+
+            if (result != null)
+            {
+                TaxiObj TaxiObject = JsonConvert.DeserializeObject<TaxiObj>(result);
+
+                if (Taxi == null)
+                {
+                    Database.AddTaxi(param.key, result);
+                }
+
+                foreach (TaxiItem schedule in TaxiObject.taxi)
+                {
+                    List<PhoneObj> phone = new List<PhoneObj>();
+                    foreach (object ph in schedule.phone)
+                    {
+                        phone.Add(new PhoneObj()
+                        {
+                            phone = ph.ToString(),
+                            name = schedule.name,
+                        });
+                    }
+                    taxi_list.Add(new TaxiList()
+                    {
+                        name = "Название",
+                        description = "Описание",
+                        phone = "Телефоны",
+                        place = "Офис",
+                        name_schedule = schedule.name,
+                        description_schedule = schedule.description,
+                        phone_schedule = phone,
+                        place_schedule = schedule.place,
+                        width = currentWidth
                     });
                 }
-                taxi_list.Add(new TaxiList()
-                {
-                    name = "Название",
-                    description = "Описание",
-                    phone = "Телефоны",
-                    place = "Офис",
-                    name_schedule = schedule.name,
-                    description_schedule = schedule.description,
-                    phone_schedule = phone,
-                    place_schedule = schedule.place,
-                    width = currentWidth
-                });
             }
-
             this.DefaultViewModel["Taxi"] = taxi_list;
         }
 
@@ -208,14 +227,10 @@ namespace New_Goes.Views.Taxi.Cities
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
-        {;
-            try
-            {
-                 Windows.ApplicationModel.Calls.PhoneCallManager.ShowPhoneCallUI(((Button)sender).Content.ToString(), ((Button)sender).Tag.ToString());
-            }
-            catch(Exception es) {
-                new MessageDialog(es.Message).ShowAsync();
-            }
+        {
+            Windows.ApplicationModel.Calls.PhoneCallManager.ShowPhoneCallUI(((((Button)sender).Content as Grid).Children[1] as TextBlock).Text, ((Button)sender).Tag.ToString());
         }
+
+
     }
 }

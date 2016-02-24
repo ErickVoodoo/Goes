@@ -24,14 +24,6 @@
             <TextBlock Margin="0,0,0,-9.5" Text="{Binding}"/>
         </DataTemplate>
 
-        <!-- Grid-appropriate item template as seen in section 2 -->
-        <DataTemplate x:Key="Standard200x180TileItemTemplate">
-            <Grid Margin="0,0,9.5,9.5" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                <Image Source="{Binding ImagePath}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" Height="138.5" Width="138.5"/>
-                <TextBlock Text="{Binding Title}" VerticalAlignment="Bottom" Margin="9.5,0,0,6.5" Style="{ThemeResource BaseTextBlockStyle}"/>
-            </Grid>
-        </DataTemplate>
-
         <DataTemplate x:Key="StandardTripleLineItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -119,8 +111,34 @@
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonUpdateDatabase" Click="Update_Schedule"/>
                         <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonChangeCity" Click="Button_Click"/>
                         <TextBlock Visibility="Collapsed" x:Uid="Reload_Application" x:Name="TextBlock_ReloadApp" Foreground="Red" HorizontalAlignment="Stretch" TextWrapping="Wrap"  Style="{ThemeResource ListViewItemSubheaderTextBlockStyle}"/>
-                        <ToggleSwitch x:Name="Toggle_Theme" Toggled="ToggleSwitch_Toggled"/>
-                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonRate"/>
+                        <ToggleSwitch x:Uid="MainMenuSettings_ToggleTheme" x:Name="Toggle_Theme" Toggled="ToggleSwitch_Toggled"/>
+                        <Button HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonRate" Click="Rate_App"/>
+                        <Button HorizontalAlignment="Stretch" Click="Feedback_Click" x:Uid="MainMenuSettings_ButtonFeedback"/>
+                        <Button x:Uid="MainMenuSettings_ButtonBuyPremium" HorizontalAlignment="Stretch">
+                            <Button.Flyout>
+                                <Flyout Placement="Top">
+                                    <StackPanel VerticalAlignment="Bottom" Margin="4.5" Orientation="Vertical">
+                                        <TextBlock x:Uid="MainMenuSettings_TextBlockPremiumTitle" HorizontalAlignment="Center" Style="{ThemeResource MessageDialogTitleStyle}">
+                                           
+                                        </TextBlock>
+                                       
+                                        <Grid VerticalAlignment="Bottom">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                                <ColumnDefinition Width="1*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button Margin="9.5" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonInfo" Click="Info_Click"/>
+                                            <Button Margin="9.5" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" x:Uid="MainMenuSettings_ButtonBuy" Click="Buy_Click"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -141,10 +159,18 @@
                             <TextBlock Grid.Column="0" x:Uid="MainMenuSettings_TextServerDatabase" Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center"/>
                             <TextBlock Grid.Column="1" x:Name="Settings_Newest_Database" Style="{ThemeResource BodyTextBlockStyle}" TextAlignment="Center"/>
                         </Grid>
+                        <HyperlinkButton NavigateUri="https://vk.com/goes_grodno" HorizontalAlignment="Center" FontSize="20">
+                            <HyperlinkButton.Content>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Style="{ThemeResource BodyTextBlockStyle}" x:Uid="GroupLink"/>
+                                    <Rectangle Height="1" HorizontalAlignment="Stretch" Fill="Gray"/>
+                                </StackPanel>
+                            </HyperlinkButton.Content>
+                        </HyperlinkButton>
                     </StackPanel>
                 </Grid>
             </PivotItem>
-            <PivotItem>
+           <!-- <PivotItem>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="BaseTextBlockStyle" Style="{ThemeResource BaseTextBlockStyle}"/>
                     <TextBlock Text="BodyTextBlockStyle" Style="{ThemeResource BodyTextBlockStyle}"/>
@@ -163,7 +189,7 @@
                     <TextBlock Text="SubheaderTextBlockStyle" Style="{ThemeResource SubheaderTextBlockStyle}"/>
                     <TextBlock Text="TitleTextBlockStyle" Style="{ThemeResource TitleTextBlockStyle}"/>
                 </StackPanel>
-            </PivotItem>
+            </PivotItem>-->
         </Pivot>
     </Grid>
 </Page>

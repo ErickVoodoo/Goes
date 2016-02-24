@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -101,23 +102,17 @@ namespace New_Goes.Views
             Buses = new List<DirectionSQL>();
             Trolls = new List<DirectionSQL>();
             Tramms = new List<DirectionSQL>();
-            /*"SELECT s.d_id as d_id, d.name as name, r.number as number,s.r_id as r_id,r.type as type " +
-                "FROM stop AS s " +
-                "INNER JOIN direction as d ON s.d_id = d.id " +
-                "INNER JOIN route as r ON s.r_id = r.id " +
-                //"GROUP BY name " +
-                "ORDER BY r_id"*/
+
             var items = connection.Query<DirectionSQL>(
-                "SELECT s.d_id as d_id, d.name as name, r.number as number,s.r_id as r_id,r.type as type " +
+                "SELECT s.d_id as d_id, REPLACE(d.name, '[без посадки и высадки]','') as name, r.number as number,s.r_id as r_id,r.type as type " +
                 "FROM stop AS s " +
                 "INNER JOIN direction as d ON s.d_id = d.id " +
                 "INNER JOIN route as r ON s.r_id = r.id " +
-                "GROUP BY CAST(d.id AS INT)" +
+                "GROUP BY name,r_id "+
                 "ORDER BY r_id");
 
             foreach (var item in items)
             {
-                /*TODO ИСПРАВИТЬ СПИСОК С ТРАНСПОРТОМ!!!!(MUST HAVE)*/
                 if (item.type != null)
                 {
                     if (item.type == 0)
@@ -225,7 +220,7 @@ namespace New_Goes.Views
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!Frame.Navigate(typeof(Views.DirectionStops), e.ClickedItem as DirectionSQL))
+            if (!Frame.Navigate(typeof(Views.DirectionStops), JsonConvert.SerializeObject(e.ClickedItem as DirectionSQL)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

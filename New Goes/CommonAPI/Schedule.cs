@@ -7,7 +7,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Data.Json;
+using Windows.UI.Popups;
 
 namespace New_Goes.CommonAPI
 {
@@ -15,7 +17,6 @@ namespace New_Goes.CommonAPI
     {
         public async Task<Status> GetSchedule(string city)
         {
-            Database.CreateTables();
             string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
 
             List<Route> Routes = new List<Route>();
@@ -32,7 +33,7 @@ namespace New_Goes.CommonAPI
             try
             {
                 var HttpClientConnection = new HttpClient(new HttpClientHandler());
-                HttpResponseMessage ResponseConnection = await HttpClientConnection.PostAsync(city, new FormUrlEncodedContent(values));
+                HttpResponseMessage ResponseConnection = await HttpClientConnection.PostAsync(Constant.City.Where(p => p.key == city).FirstOrDefault().value, new FormUrlEncodedContent(values));
                 ResponseConnection.EnsureSuccessStatusCode();
                 string ResponseString = await ResponseConnection.Content.ReadAsStringAsync();
 
@@ -99,7 +100,7 @@ namespace New_Goes.CommonAPI
                         schedule = objectS["schedule"].GetString(),
                     });
                 }
-
+                Database.DropDatabase();
                 SQLiteConnection connection = new SQLiteConnection(dbPath);
                 connection.InsertAll(Routes);
                 connection.InsertAll(Directions);

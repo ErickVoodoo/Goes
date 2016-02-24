@@ -14,26 +14,25 @@ namespace New_Goes.CommonAPI
         public static void CreateTables()
         {
             string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
-            SQLiteAsyncConnection connection = new SQLiteAsyncConnection(dbPath);
-            connection.CreateTableAsync<Route>();
-            connection.CreateTableAsync<Direction>();
-            connection.CreateTableAsync<Stop>();
-            connection.CreateTableAsync<StopName>();
-            connection.CreateTableAsync<Pointer>();
-            connection.CreateTableAsync<FBusSQL>();
-            connection.CreateTableAsync<TaxiSQL>();
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            connection.CreateTable<Route>();
+            connection.CreateTable<Direction>();
+            connection.CreateTable<Stop>();
+            connection.CreateTable<StopName>();
+            connection.CreateTable<Pointer>();
+            connection.CreateTable<FBusSQL>();
+            connection.CreateTable<TaxiSQL>();
         }
 
         public static void DropDatabase()
         {
             string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
-            SQLiteAsyncConnection connection = new SQLiteAsyncConnection(dbPath);
-            connection.QueryAsync<Route>("DROP TABLE IF EXISTS route");
-            connection.QueryAsync<Direction>("DROP TABLE IF EXISTS direction");
-            connection.QueryAsync<Stop>("DROP TABLE IF EXISTS stop");
-            connection.QueryAsync<StopName>("DROP TABLE IF EXISTS stopname");
-            connection.QueryAsync<Pointer>("DROP TABLE IF EXISTS pointer");
-            CreateTables();
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            connection.Query<Route>("delete from route");
+            connection.Query<Direction>("delete from direction");
+            connection.Query<Stop>("delete from stop");
+            connection.Query<StopName>("delete from stopname");
+            connection.Query<Pointer>("delete from pointer");
         }
 
         public static string GetTaxiJSON(string city)
@@ -115,6 +114,14 @@ namespace New_Goes.CommonAPI
                 return true;
             }
             return false;
+        }
+
+        public static List<Stop> GetAllFavoriteStops()
+        {
+            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
+            SQLiteConnection connection = new SQLiteConnection(dbPath);
+            List<Stop> stops = connection.Query<Stop>("SELECT * FROM stop WHERE favorite=1");
+            return stops;
         }
     }
 }

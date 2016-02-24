@@ -2,6 +2,7 @@
 using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -91,7 +92,7 @@ namespace New_Goes.Views
             SQLiteConnection connection = new SQLiteConnection(dbPath);
             Favorites = new ObservableCollection<StopNameSQL>();
             var items = connection.Query<StopNameSQL>(
-                "SELECT s.n_id as id, sn.name as name " +
+                "SELECT s.n_id as id, REPLACE(sn.name,'ул. ','') as name " +
                 "FROM stop AS s " +
                 "LEFT JOIN stopname as sn ON s.n_id = sn.id " +
                 "WHERE s.favorite=1 " +
@@ -164,7 +165,7 @@ namespace New_Goes.Views
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!Frame.Navigate(typeof(Views.FavoriteTransport), e.ClickedItem as StopNameSQL))
+            if (!Frame.Navigate(typeof(Views.FavoriteTransport), JsonConvert.SerializeObject(e.ClickedItem as StopNameSQL)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

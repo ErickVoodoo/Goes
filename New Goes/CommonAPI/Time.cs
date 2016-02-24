@@ -23,7 +23,7 @@ namespace New_Goes.CommonAPI
                 List<TimeView> tempList = new List<TimeView>();
                 last_hour = -1;
                 minutes = "";
-                if(int.Parse(daysArray[i]) != -1) {
+                if(daysArray[i] != "" && int.Parse(daysArray[i]) != -1) {
                     string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[i])].Split(',');
                     for (int j = 0; j < scheduleDayArray.Length; j++)
                     {
@@ -36,6 +36,7 @@ namespace New_Goes.CommonAPI
                         {
                             tempList.Add(new TimeView()
                             {
+                                color = i == getCurrentDaySchedule(schedule, days) && (last_hour - (last_hour / 24) * 24) == DateTime.Now.Hour ? "Gray" : "Transparent",
                                 hour = last_hour - (last_hour/24) * 24,
                                 width = width,
                                 minute = minutes.Substring(0, minutes.Length - 1),
@@ -52,6 +53,7 @@ namespace New_Goes.CommonAPI
                 if(last_hour != -1)
                     tempList.Add(new TimeView()
                     {
+                        color = i == getCurrentDaySchedule(schedule, days) && (last_hour - (last_hour / 24) * 24) == DateTime.Now.Hour ? "Gray" : "Transparent",
                         hour = last_hour - (last_hour/24) * 24,
                         width = width,
                         minute = minutes.Substring(0, minutes.Length - 1),
@@ -78,14 +80,14 @@ namespace New_Goes.CommonAPI
             if (int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
             {
                 string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[last_week_day])].Split(',');
-                if (int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > currentHour * 60 + currenMinute)
+                if (scheduleDayArray[scheduleDayArray.Length - 1] != "" && int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > currentHour * 60 + currenMinute)
                     current_week_day = last_week_day;
             }
 
             if (current_week_day == getWeekDay())
                 currentHour = DateTime.Now.Hour;
 
-            if (int.Parse(daysArray[current_week_day]) != -1)
+            if (daysArray[current_week_day] != "" && int.Parse(daysArray[current_week_day]) != -1)
             {
                 string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[current_week_day])].Split(',');
                 for (int j = 0; j < scheduleDayArray.Length; j++)
@@ -96,7 +98,7 @@ namespace New_Goes.CommonAPI
                         if (hm.hour * 60 + hm.minute >= currentHour * 60 + currenMinute)
                         {
                             HM current = getHourMinute(((hm.hour * 60 + hm.minute) - (currentHour * 60 + currenMinute)).ToString());
-                            return (current.hour == 0 ? "" : current.hour.ToString() + " ч.") + " " + current.minute + " м.";
+                            return (current.hour == 0 ? "" : current.hour.ToString() + " " + this.resourceLoader.GetString("String_H") + " ") + "" + current.minute + " " + this.resourceLoader.GetString("String_M");
                         }
                     }
                 }
@@ -116,12 +118,22 @@ namespace New_Goes.CommonAPI
             string[] daysArray = days.Split(',');
             string current_day = daysArray[getWeekDay()];
 
-            if (int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
+            for (int i = 0; i <= current_week_day; i++)
+            {
+                if(daysArray[i] == "-1") 
+                {
+                    current_week_day--;
+                    last_week_day--;
+                }
+            }
+
+            if (last_week_day != -1 && int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
             {
                 string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[last_week_day])].Split(',');
                 if (int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > currentHour * 60 + currenMinute)
                     return last_week_day;
             }
+
             return current_week_day;
         }
 
