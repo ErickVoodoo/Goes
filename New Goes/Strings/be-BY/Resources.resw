@@ -280,7 +280,7 @@
     <value>аб прэміум версіі</value>
   </data>
   <data name="StaticButtonBuy" xml:space="preserve">
-    <value>набыць прэміум</value>
+    <value>набыць </value>
   </data>
   <data name="StaticButtonCancel" xml:space="preserve">
     <value>закрыць</value>

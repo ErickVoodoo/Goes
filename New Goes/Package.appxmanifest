@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="18000erickvoodoo.5188169E4FF05" Publisher="CN=AA94B164-8128-40FF-A6E0-05DABE7A7525" Version="3000.2.0.3" />
+  <Identity Name="18000erickvoodoo.5188169E4FF05" Publisher="CN=AA94B164-8128-40FF-A6E0-05DABE7A7525" Version="3000.3.0.1" />
   <mp:PhoneIdentity PhoneProductId="e0add739-735c-4ec9-aadc-5c7cc8893d29" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Goes - транспорт Беларуси</DisplayName>
@@ -16,7 +16,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="New_Goes.App">
-      <m3:VisualElements DisplayName="New Goes" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="New Goes" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
+      <m3:VisualElements DisplayName="Goes - транспорт Беларуси" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="Расписание общественного транспорта городов Беларуси" ForegroundText="light" BackgroundColor="transparent" ToastCapable="true">
         <m3:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
         </m3:DefaultTile>
         <m3:SplashScreen Image="Assets\SplashScreen.png" />

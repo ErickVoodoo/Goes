@@ -280,7 +280,7 @@
     <value>about premium version</value>
   </data>
   <data name="StaticButtonBuy" xml:space="preserve">
-    <value>buy premium</value>
+    <value>buy</value>
   </data>
   <data name="StaticButtonCancel" xml:space="preserve">
     <value>cancel</value>

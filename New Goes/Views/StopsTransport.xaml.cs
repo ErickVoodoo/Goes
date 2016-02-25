@@ -135,9 +135,9 @@ namespace New_Goes.Views
                 "FROM stop AS s " +
                 "LEFT JOIN direction as d ON d_id = d.id " +
                 "LEFT JOIN route as r ON r_id = r.id " + 
-                "WHERE n_id=" + param.id + " " + 
-                "GROUP BY name " +
-                "ORDER BY r.id");
+                "WHERE n_id=" + param.id + " " +
+                "GROUP BY name,r_id " +
+                "ORDER BY r_id");
 
             foreach (var item in items)
             {
