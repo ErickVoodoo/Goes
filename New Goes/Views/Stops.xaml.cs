@@ -3,6 +3,7 @@ using New_Goes.CommonAPI;
 using New_Goes.Data;
 using New_Goes.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -106,16 +107,19 @@ namespace New_Goes.Views
                 Transport.Add(new StopNameAllSQL()
                 {
                     id = item.id,
-                    isBus = buses.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light    ? "/Assets/MenuItemsLogo/ic_bus_white.png"   : "/Assets/MenuItemsLogo/ic_bus_black.png") : null,
-                    isTroll = trolls.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_troll_white.png" : "/Assets/MenuItemsLogo/ic_troll_black.png") : null,
-                    isTramm = tramms.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_tram_white.png"  : "/Assets/MenuItemsLogo/ic_tram_black.png") : null,
+                    isBus = buses.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_bus_white.png" : "/Assets/MenuItemsLogo/ic_bus_black.png") : null,
+                    isTroll = trolls.Find(x => x.name== item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_troll_white.png" : "/Assets/MenuItemsLogo/ic_troll_black.png") : null,
+                    isTramm = tramms.Find(x => x.name == item.name) != null ? (LocalProperties.LoadFromToLP(LocalProperties.LP_theme) != LocalProperties.theme_light ? "/Assets/MenuItemsLogo/ic_tram_white.png" : "/Assets/MenuItemsLogo/ic_tram_black.png") : null,
                     name = item.name,
                     width = screenWidth
                 });
             }
 
-
-            this.DefaultViewModel["Transport"] = Transport.Count != 0 ? Transport : null;
+            List<StopNameAllSQL>  New_Transport = new List<StopNameAllSQL>();
+            var tt = Transport.GroupBy(item => item.name)
+                         .Select(group => new { name = group.Key, width = screenWidth, id = group.ToList()[0].id, isBus = group.ToList()[0].isBus, isTroll = group.ToList()[0].isTroll, isTramm = group.ToList()[0].isTramm })
+                         .ToList();
+            this.DefaultViewModel["Transport"] = tt;
 
             /*await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
@@ -186,7 +190,17 @@ namespace New_Goes.Views
 
         private void ListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (!Frame.Navigate(typeof(Views.StopsTransport), JsonConvert.SerializeObject(e.ClickedItem as StopNameAllSQL)))
+            JObject obj = JObject.Parse(JsonConvert.SerializeObject(e.ClickedItem));
+            StopNameAllSQL new_obj = new StopNameAllSQL()
+            {
+                id = obj["id"].ToString(),
+                isBus = obj["isBus"].ToString(),
+                isTramm = obj["isTramm"].ToString(),
+                isTroll = obj["isTroll"].ToString(),
+                name = obj["name"].ToString(),
+                width = screenWidth
+            };
+            if (!Frame.Navigate(typeof(Views.StopsTransport), JsonConvert.SerializeObject(new_obj as StopNameAllSQL)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
@@ -194,7 +208,11 @@ namespace New_Goes.Views
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            this.DefaultViewModel["Transport"] = Transport.Where(text => text.name.ToUpper().Contains((sender as TextBox).Text.ToUpper()));
+            var search =  Transport.Where(text => text.name.ToUpper().Contains((sender as TextBox).Text.ToUpper()));
+
+            this.DefaultViewModel["Transport"] = search.GroupBy(item => item.name)
+                         .Select(group => new { name = group.Key, width = screenWidth, id = group.ToList()[0].id, isBus = group.ToList()[0].isBus, isTroll = group.ToList()[0].isTroll, isTramm = group.ToList()[0].isTramm })
+                         .ToList(); ;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

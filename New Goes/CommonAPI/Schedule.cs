@@ -23,7 +23,7 @@ namespace New_Goes.CommonAPI
             List<Direction> Directions = new List<Direction>();
             List<Stop> Stops = new List<Stop>();
             List<StopName> StopNames = new List<StopName>();
-            List<Pointer> Pointers = new List<Pointer>();
+            //List<Pointer> Pointers = new List<Pointer>();
 
             var values = new List<KeyValuePair<string, string>>
             {
@@ -73,7 +73,7 @@ namespace New_Goes.CommonAPI
                     });
                 }
 
-                JsonArray pointersArray = jsonObject["pointers"].GetArray();
+                /*JsonArray pointersArray = jsonObject["pointers"].GetArray();
                 foreach (JsonValue pointer in pointersArray)
                 {
                     JsonObject objectP = pointer.GetObject();
@@ -82,7 +82,7 @@ namespace New_Goes.CommonAPI
                         id = Int32.Parse(objectP["id"].GetString()),
                         name = objectP["name"].GetString(),
                     });
-                }
+                }*/
 
                 JsonArray stopsArray = jsonObject["stops"].GetArray();
                 foreach (JsonValue stops in stopsArray)
@@ -94,7 +94,7 @@ namespace New_Goes.CommonAPI
                         n_id = Int32.Parse(objectS["n_id"].GetString()),
                         r_id = Int32.Parse(objectS["r_id"].GetString()),
                         d_id = Int32.Parse(objectS["d_id"].GetString()),
-                        p_id = Int32.Parse(objectS["p_id"].GetString()),
+                        //p_id = Int32.Parse(objectS["p_id"].GetString()),
                         favorite = 0,
                         days = objectS["days"].GetString(),
                         schedule = objectS["schedule"].GetString(),
@@ -106,7 +106,7 @@ namespace New_Goes.CommonAPI
                 connection.InsertAll(Directions);
                 connection.InsertAll(StopNames);
                 connection.InsertAll(Stops);
-                connection.InsertAll(Pointers);
+                //connection.InsertAll(Pointers);
 
                 LocalProperties.SaveToLP(LocalProperties.LP_current_version, jsonObject["version"].GetNumber().ToString());
             }

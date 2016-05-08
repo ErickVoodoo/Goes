@@ -107,7 +107,6 @@ namespace New_Goes.Views
         {
             Time time = new Time();
             List<List<New_Goes.CommonAPI.Time.TimeView>> list = time.getScheduleList(param.width, param.days, param.schedule);
-            Debug.WriteLine("Count");
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal,
             () =>
             {

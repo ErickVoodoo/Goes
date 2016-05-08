@@ -118,7 +118,7 @@ namespace New_Goes.CommonAPI
             string[] daysArray = days.Split(',');
             string current_day = daysArray[getWeekDay()];
 
-            for (int i = 0; i <= current_week_day; i++)
+            for (int i = 0; i <= getWeekDay(); i++)
             {
                 if(daysArray[i] == "-1") 
                 {
@@ -127,14 +127,14 @@ namespace New_Goes.CommonAPI
                 }
             }
 
-            if (last_week_day != -1 && int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
+            if (last_week_day > 0 && int.Parse(daysArray[last_week_day]) != -1 && currentHour >= 24)
             {
                 string[] scheduleDayArray = scheduleArray[Int32.Parse(daysArray[last_week_day])].Split(',');
                 if (int.Parse(scheduleDayArray[scheduleDayArray.Length - 1]) > currentHour * 60 + currenMinute)
                     return last_week_day;
             }
 
-            return current_week_day;
+            return current_week_day < 0 ? 0 : current_week_day;
         }
 
         public static int getWeekDay() 

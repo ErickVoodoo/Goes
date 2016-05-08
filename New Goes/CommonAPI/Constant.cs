@@ -39,8 +39,8 @@ namespace New_Goes.CommonAPI
         public static string CITY_MINSK_SCHEDULE    = "https://minsk.btrans.by/dev/api/v3/schedule";
         public static string CITY_MINSK_METADATA    = "https://minsk.btrans.by/dev/api/v3/metadata";
 
-        public static string CITY_FBUSES            = "http://vkcheck.hol.es/goes/getFbus";
-        public static string CITY_TAXIS             = "http://vkcheck.hol.es/goes/getTaxi";
+        public static string CITY_FBUSES            = "http://goesbe.hol.es/goes/getFbus";
+        public static string CITY_TAXIS             = "http://goesbe.hol.es/goes/getTaxi";
 
         public static StaticData[] City = {     new StaticData("Брест", "brest", CITY_BREST_SCHEDULE, "Transparent", "White"),
                                                 new StaticData("Витебск", "vitebsk", CITY_VITEBSK_SCHEDULE, "Transparent", "White"),
@@ -94,7 +94,6 @@ namespace New_Goes.CommonAPI
 
         public async static Task<string> GetJsonFromURI(string uri, List<KeyValuePair<string, string>> data)
         {
-            string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
             var HttpClientConnection = new HttpClient(new HttpClientHandler());
             HttpResponseMessage ResponseConnection = await HttpClientConnection.PostAsync(uri, new FormUrlEncodedContent(data));
             ResponseConnection.EnsureSuccessStatusCode();

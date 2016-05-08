@@ -136,7 +136,7 @@
     <value>успешно</value>
   </data>
   <data name="HeaderTitleFavorites.Text" xml:space="preserve">
-    <value>избранные</value>
+    <value>избранное</value>
   </data>
   <data name="HeaderTitleFBus.Text" xml:space="preserve">
     <value>маршрутные такси</value>

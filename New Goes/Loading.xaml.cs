@@ -75,11 +75,11 @@ namespace New_Goes
         {
             this.defaultViewModel["Cities"] = Constant.City;
             cities = Constant.City;
-            if (LocalProperties.LoadFromToLP(LocalProperties.LP_first_message) == null)
+            /*if (LocalProperties.LoadFromToLP(LocalProperties.LP_first_message) == null)
             {
                 LocalProperties.SaveToLP(LocalProperties.LP_first_message, "true");
                 new MessageDialog("Данное приложение было полностью сделано с 0 в связи с утерей файлов предыдущего проекта. Если Вы устанавливали прежнюю версию данного приложения - Вам придется заново загрузить расписание города и выбрать Ваши избранные остановки, приношу свои извинения за данное неудобство. Спасибо.","Внимание").ShowAsync();
-            }
+            }*/
         }
 
         /// <summary>

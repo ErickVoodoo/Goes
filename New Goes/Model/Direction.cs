@@ -28,6 +28,7 @@ namespace New_Goes.Model
         public double width { get; set; }
         public string number { get; set; }
         public string name { get; set; }
+        public string d_name { get; set; }
         public string days { get; set; }
         public string favorite { get; set; }
         public string schedule { get; set; }

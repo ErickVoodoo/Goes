@@ -131,12 +131,13 @@ namespace New_Goes.Views
             Trolls = new ObservableCollection<DirectionStopSQL>();
             Tramms = new ObservableCollection<DirectionStopSQL>();
             var items = connection.Query<DirectionStopSQL>(
-                "SELECT s.r_id as r_id, s.n_id as n_id, s.d_id as d_id,s.favorite as favorite,d.name as name, r.number as number, s.schedule as schedule, s.days as days, r.type as type " +
+                "SELECT s.r_id as r_id, s.n_id as n_id, s.d_id as d_id,s.favorite as favorite,d.name as d_name,sn.name as sn_name, r.number as number, s.schedule as schedule, s.days as days, r.type as type " +
                 "FROM stop AS s " +
                 "LEFT JOIN direction as d ON d_id = d.id " +
-                "LEFT JOIN route as r ON r_id = r.id " + 
-                "WHERE n_id=" + param.id + " " +
-                "GROUP BY name,r_id " +
+                "LEFT JOIN route as r ON r_id = r.id " +
+                "LEFT JOIN stopname as sn ON n_id = sn.id " +
+                "WHERE sn_name LIKE '%" + param.name + "%' " +
+                "GROUP BY d_name,r_id " +
                 "ORDER BY r_id");
 
             foreach (var item in items)
@@ -146,7 +147,7 @@ namespace New_Goes.Views
                     Buses.Add(new DirectionStopSQL()
                     {
                         width = param.width,
-                        name = item.name,
+                        d_name = item.d_name,
                         r_id = item.r_id,
                         number = item.number,
                         type = item.type,
@@ -163,7 +164,7 @@ namespace New_Goes.Views
                     Trolls.Add(new DirectionStopSQL()
                     {
                         width = param.width,
-                        name = item.name,
+                        d_name = item.d_name,
                         r_id = item.r_id,
                         number = item.number,
                         d_id = item.d_id,
@@ -180,7 +181,7 @@ namespace New_Goes.Views
                     Tramms.Add(new DirectionStopSQL()
                     {
                         width = param.width,
-                        name = item.name,
+                        d_name = item.d_name,
                         r_id = item.r_id,
                         number = item.number,
                         d_id = item.d_id,
@@ -317,7 +318,7 @@ namespace New_Goes.Views
                     tramm.Favorite = this.DefaultViewModel["Favorite"].ToString();
                 }
             }
-            Database.AddOrRemoveFromFavoriteWholeStop(Int32.Parse(param.id));
+            Database.AddOrRemoveFromFavoriteWholeStop(param.name);
         }
     }
 }

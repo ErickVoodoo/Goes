@@ -82,7 +82,7 @@ namespace New_Goes.Views
         bool isLoaded = false;
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
-                this.DefaultViewModel["Title"] = "Избранные";
+                this.DefaultViewModel["Title"] = "Избранное";
         }
 
         ObservableCollection<StopNameSQL> Favorites;

@@ -19,7 +19,7 @@ namespace New_Goes.CommonAPI
             connection.CreateTable<Direction>();
             connection.CreateTable<Stop>();
             connection.CreateTable<StopName>();
-            connection.CreateTable<Pointer>();
+            //connection.CreateTable<Pointer>();
             connection.CreateTable<FBusSQL>();
             connection.CreateTable<TaxiSQL>();
         }
@@ -32,7 +32,7 @@ namespace New_Goes.CommonAPI
             connection.Query<Direction>("delete from direction");
             connection.Query<Stop>("delete from stop");
             connection.Query<StopName>("delete from stopname");
-            connection.Query<Pointer>("delete from pointer");
+            //connection.Query<Pointer>("delete from pointer");
         }
 
         public static string GetTaxiJSON(string city)
@@ -81,18 +81,24 @@ namespace New_Goes.CommonAPI
             }
         }
 
-        public static void AddOrRemoveFromFavoriteWholeStop(int s_id)
+        public static void AddOrRemoveFromFavoriteWholeStop(string name)
         {
             string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "goes.db");
             SQLiteConnection connection = new SQLiteConnection(dbPath);
-            if (connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0} AND s.favorite=1", s_id)).Count ==
-                connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0}", s_id)).Count)
+
+            List<StopNameSQL> stops = connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stopname as sn WHERE sn.name LIKE '%{0}%'", name));
+
+            foreach (var stop in stops)
             {
-                connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=0 WHERE n_id={0}", s_id));
-            }
-            else
-            {
-                connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=1 WHERE n_id={0}", s_id));
+                if (connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0} AND s.favorite=1", stop.id)).Count ==
+                connection.Query<Model.StopNameSQL>(String.Format("SELECT * FROM stop as s WHERE s.n_id={0}", stop.id)).Count)
+                {
+                    connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=0 WHERE n_id={0}", stop.id));
+                }
+                else
+                {
+                    connection.Query<Model.StopNameSQL>(String.Format("UPDATE stop SET favorite=1 WHERE n_id={0}", stop.id));
+                }
             }
         }
 
